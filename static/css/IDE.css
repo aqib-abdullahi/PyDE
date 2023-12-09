@@ -39,7 +39,7 @@ body {
     width: 20vw;
     overflow: auto;
     resize: horizontal;
-    min-width: 150px;
+    min-width: 60px;
     max-width: 230px;
 }
 
@@ -64,20 +64,24 @@ body {
 .editor {
     background-color: aqua;
     height: 94vh;
-    width: 37.5vw;
+    width: 35.5vw;
     flex-grow: 1;
-    overflow: auto;
+    /* overflow: scroll; */
     resize: horizontal;
-    min-width: 300px;
+    min-width: 50px;
+    border-right: solid #1b1c18 2px;
+    border-left: solid #1b1c18 20px;
     max-width: 1500px;
 }
 
 .shell {
-    background-color: cadetblue;
+    background-color: #1b1c18;
     height: 94vh;
     width: 30.5vw;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: auto;
     flex-grow: 2;
-    min-width: 200px;
     max-width: 1500px;
 }
 
@@ -87,4 +91,8 @@ body {
     width: 100vw;
     display: flex;
     justify-content: center;
+}
+
+.xterm {
+    height: 100%;
 }
