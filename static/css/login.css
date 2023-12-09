@@ -1,0 +1,90 @@
+::-webkit-scrollbar {
+    width: 7px;
+    background-color: #F5F5F5;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #555;
+}
+
+div.CodeMirror {
+    color: #fff !important;
+    font-size: 1.1rem;
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+body {
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    height: 94vh;
+    background-color: aqua;
+    width: 100vw;
+}
+
+.files {
+    background-color: bisque;
+    height: 94vh;
+    width: 20vw;
+    overflow: auto;
+    resize: horizontal;
+    min-width: 150px;
+    max-width: 230px;
+}
+
+.run-btn button {
+    margin: 0;
+    font-family: sans-serif;
+    height: 2rem;
+    width: 3rem;
+    margin: 0 auto;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    color: #F5F5F5;
+    background-color: rgb(24, 196, 98);
+}
+
+.run-btn {
+    position: relative;
+    top: .25rem;
+}
+
+.editor {
+    background-color: aqua;
+    height: 94vh;
+    width: 37.5vw;
+    flex-grow: 1;
+    overflow: auto;
+    resize: horizontal;
+    min-width: 300px;
+    max-width: 1500px;
+}
+
+.shell {
+    background-color: cadetblue;
+    height: 94vh;
+    width: 30.5vw;
+    flex-grow: 2;
+    min-width: 200px;
+    max-width: 1500px;
+}
+
+.header {
+    background-color: #1b1c18;
+    height: 6vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
