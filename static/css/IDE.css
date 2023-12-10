@@ -29,12 +29,12 @@ body {
 .container {
     display: flex;
     height: 94vh;
-    background-color: aqua;
     width: 100vw;
 }
 
 .files {
-    background-color: bisque;
+    background-color: #272822;
+    color: #f8f8f2;
     height: 94vh;
     width: 20vw;
     overflow: auto;
@@ -62,11 +62,9 @@ body {
 }
 
 .editor {
-    background-color: aqua;
     height: 94vh;
     width: 35.5vw;
     flex-grow: 1;
-    /* overflow: scroll; */
     resize: horizontal;
     min-width: 50px;
     border-right: solid #1b1c18 2px;
@@ -95,4 +93,78 @@ body {
 
 .xterm {
     height: 100%;
+}
+
+aside {
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 5px;
+    overflow: auto;
+}
+
+ul,
+li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.spanned {
+    padding-left: 5px;
+}
+
+.spanned:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+ul.treeRoot>li ul,
+ul.treeRoot>li ul {
+    padding-left: 5px;
+}
+
+ul.treeRoot li {
+    border-left: 1px solid #000;
+}
+
+ul.treeRoot ul li,
+ul.treeRoot li {
+    border-left: 2px solid #eacece;
+    padding-left: 18px;
+    position: relative;
+    font-size: 14px;
+    font-family: 'Ubuntu Mono';
+    line-height: 24px;
+}
+
+ul.treeRoot ul li:last-child:after,
+ul.treeRoot li:last-child:after {
+    position: absolute;
+    content: "";
+    display: inline-block;
+    top: 12px;
+    width: 1px;
+    left: -1px;
+    bottom: 0;
+    background: #fff
+}
+
+ul.treeRoot ul li:before,
+ul.treeRoot li:before {
+    height: 1px;
+    background: #fff;
+    width: 15px;
+    height: 2px;
+    left: 0;
+    top: 11px;
+    display: inline-block;
+    content: "";
+    position: absolute;
+}
+
+.treeRoot li ul {
+    display: none;
+}
+
+.treeRoot li ul.activeSubMenu {
+    display: block;
 }
