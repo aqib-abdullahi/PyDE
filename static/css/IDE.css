@@ -168,3 +168,111 @@ ul.treeRoot li:before {
 .treeRoot li ul.activeSubMenu {
     display: block;
 }
+
+
+/* fontawesome */
+
+i {
+    padding-left: 2px;
+}
+
+#user-icon {
+    color: white;
+    /* float: right; */
+    position: absolute;
+    right: 0;
+    margin-right: 1.2rem;
+    margin-top: 0rem;
+    font-size: 1.1rem;
+}
+
+
+/* #down-arrow {
+    color: white;
+} */
+
+
+/* #user-icon: */
+
+.user-icon {
+    /* float: right; */
+    position: absolute;
+    right: 0;
+    margin-right: 1rem;
+    margin-top: .7rem;
+    font-size: 1.1rem;
+    /* border: ; */
+}
+
+#user-icon:hover {
+    position: absolute;
+    right: 0;
+    margin-right: 1.2rem;
+    margin-top: 0rem;
+    font-size: 1.1rem;
+    color: cadetblue;
+    cursor: pointer;
+}
+
+.user-profile {
+    background-color: transparent;
+    border: none;
+}
+
+
+/* .user-profile:hover {
+    background-color: black;
+    border: none;
+} */
+
+
+/* profile */
+
+.acc-info {
+    width: 4rem;
+    height: 4rem;
+    position: absolute;
+    top: 1.5rem;
+    right: 1rem;
+    /* background-color: #eacece; */
+    z-index: 2;
+    /* padding: 2px; */
+    padding-top: 10px;
+    padding-bottom: 0;
+    text-align: center;
+    background-color: #1b1c18;
+    border-radius: 10px;
+    display: none;
+}
+
+.block {
+    display: block;
+}
+
+.acc-info a {
+    text-decoration: none;
+    color: #fff;
+    /* margin: 2px; */
+    /* margin-top: 20px; */
+    /* padding-top: 20px; */
+    font-family: 'Ubuntu Mono';
+    font-size: .9rem;
+    /* font-weight: ; */
+    /* font-weight: 600; */
+    /* line-height: 1rem; */
+}
+
+.acc-info>a:hover {
+    text-decoration: none;
+    color: #fff;
+    /* margin: 2px; */
+    /* margin-top: 20px; */
+    /* padding-top: 20px; */
+    font-family: 'Ubuntu Mono';
+    font-size: .9rem;
+    /* color: #272822; */
+    color: cadetblue;
+    /* font-weight: ; */
+    /* font-weight: 600; */
+    /* line-height: 1rem; */
+}

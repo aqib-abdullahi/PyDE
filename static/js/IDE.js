@@ -26,3 +26,12 @@ editor.on("change", function(cm) {
     CodeMirror.simpleHint(cm, CodeMirror.pythonHint);
 });
 editor.setSize('100%', '100%')
+
+const dropDown = document.querySelector('.acc-info')
+const profiler = document.getElementById('user-icon')
+profiler.addEventListener('click', function() {
+    // if (dropDown.classList.contains(block)) {
+    //     dropDown.cl
+    // }
+    dropDown.classList.toggle('block')
+})
