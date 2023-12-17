@@ -1,36 +1,25 @@
 const term = new Terminal({
     cursorBlink: true,
-    cols: 10,
+    cols: 40,
     theme: { background: '#272822' },
     fontSize: 17,
     fontFamily: 'Ubuntu Mono, courier-new, courier, monospace',
 
 });
 term.open(document.querySelector('.shell'));
+
+// FIT ADDON
 const fitAddon = new FitAddon.FitAddon();
 term.loadAddon(fitAddon);
 fitAddon.fit();
 
-// const socket = new WebSocket('ws://localhost:3000');
-term.prompt = () => {
-    term.write('\r\n$ ');
-};
+// WEBSOCKET
+const ipAddress = document.getElementById('ipAddress').value;
+const containerId = document.getElementById('containerId').value;
+const port = document.getElementById('containerPort').value;
 
-term.prompt();
+const socket = new WebSocket(`ws://${ipAddress}:${port}/containers/${containerId}/attach/ws?stream=1&stdout=1&stdin=1&logs=1`);
 
-term.onKey(e => {
-    const printable = !e.domEvent.altKey && !e.domEvent.altGraphKey &&
-        !e.domEvent.ctrlKey && !e.domEvent.metaKey;
-
-    if (e.domEvent.keyCode === 13) {
-        term.prompt();
-    } else if (e.domEvent.keyCode === 8) {
-        term.write('\b \b');
-    } else if (printable) {
-        term.write(e.key);
-    }
-});
-
-// socket.onmessage = event => {
-//     term.write(event.data);
-// };
+// ATTACH ADDON
+const attachAddon = new AttachAddon.AttachAddon(socket);
+term.loadAddon(attachAddon);

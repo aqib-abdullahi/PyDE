@@ -3,25 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../static/css/IDE.css">
-    <link rel="stylesheet" href="../static/css/show-hint.css">
-    <link rel="stylesheet" href="../static/css/simple-hint.css">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/IDE.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/show-hint.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/simple-hint.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
-    </link>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/monokai.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/bespin.min.css">
     <link rel="stylesheet" href="https://codemirror.net/5/theme/oceanic-next.css">
-
     <!-- Xterm.js -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css">
-
-
     <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Ubuntu+Mono&display=swap" rel="stylesheet">
-
 
     <meta name="viewport " content="width=device-width, initial-scale=1.0 ">
     <title>IDE</title>
@@ -33,15 +27,12 @@
             <button type="button">RUN</button>
         </div>
         <div class="user-icon">
-            <!-- <button class="user-profile"> -->
             <i class="fa-regular fa-user" id="user-icon"></i>
             <div class="acc-info">
                 <a href="#"><span class="a-info">Profile</span></a>
                 <a href="#"><span class="a-info">Logout</span></a>
 
             </div>
-            <!-- <i class="fa-solid fa-caret-down" id="down-arrow"></i> -->
-            <!-- </button> -->
         </div>
     </div>
     <div class="container">
@@ -92,23 +83,29 @@
         <div class="shell">
         </div>
     </div>
+    <input type="hidden" name="ip" id="ipAddress" value="{{ ip_address }}">
+    <input type="hidden" name="container_id" id="containerId" value="{{ container_id }}">
+    <input type="hidden" name="container_port" id="containerPort" value="{{ container_port }}">
 
 </body>
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xterm-addon-attach@0.9.0/lib/xterm-addon-attach.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.3/codemirror.min.js" integrity="sha512-XMlgZzPyVXf1I/wbGnofk1Hfdx+zAWyZjh6c21yGo/k1zNC4Ve6xcQnTDTCHrjFGsOrVicJsBURLYktVEu/8vQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.3/mode/python/python.min.js" integrity="sha512-/mavDpedrvPG/0Grj2Ughxte/fsm42ZmZWWpHz1jCbzd5ECv8CB7PomGtw0NAnhHmE/lkDFkRMupjoohbKNA1Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://codemirror.net/5/addon/edit/closebrackets.js"></script>
 <script src="https://codemirror.net/5/addon/edit/matchtags.js"></script>
 <script src="https://codemirror.net/5/addon/selection/active-line.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.3/addon/comment/comment.min.js"></script>
-<script src="../static/js/show-hint.js"></script>
-<script src="../static/js/python-hint.js"></script>
-<script src="../static/js/simple-hint.js"></script>
-<script src="../static/js/IDE.js"></script>
-<script src="../static/js/file-structure.js"></script>
+<script src="{{ url_for('static', filename='js/show-hint.js') }}"></script>
+<script src="{{ url_for('static', filename='js/python-hint.js') }}"></script>
+<script src="{{ url_for('static', filename='js/simple-hint.js') }}"></script>
+<script src="{{ url_for('static', filename='js/IDE.js') }}"></script>
+<script src="{{ url_for('static', filename='js/file-structure.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
-<script src="../static/js/terminal.js"></script>
+<script src="{{ url_for('static', filename='js/terminal.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
 <!-- fontawesom -->
 <script src="https://kit.fontawesome.com/0f3c732ecf.js" crossorigin="anonymous"></script>
