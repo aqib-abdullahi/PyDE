@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session, joinedload
 import os
 from dotenv import load_dotenv
 from app.models.base import Base
+from app.models.user import User
 
 
 load_dotenv()
@@ -52,3 +53,27 @@ class MySQLDBstorage:
     def close(self):
         """closes  to release resources"""
         MySQLDBstorage.__session.close()
+
+    """USER ACTIONS"""
+    def add_user(self, UserID,
+                 FirstName,
+                 LastName,
+                 Email,
+                 Password,
+                 Container):
+        """ Adds user to db
+        """
+        try:
+            user = User(UserID=UserID,
+                        FirstName=FirstName,
+                        LastName=LastName,
+                        Email=Email,
+                        Password=Password,
+                        Container=Container)
+            session = self.__session
+            session.add(user)
+            session.commit()
+        except Exception:
+            session.rollback()
+            user = None
+        return user

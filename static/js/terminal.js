@@ -23,3 +23,16 @@ const socket = new WebSocket(`ws://${ipAddress}:${port}/containers/${containerId
 // ATTACH ADDON
 const attachAddon = new AttachAddon.AttachAddon(socket);
 term.loadAddon(attachAddon);
+
+
+// function uploads file to container
+function uploadFileToContainer(filename, fileContent) {
+    const message = `echo "${fileContent}" > ${filename} \n`
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(message);
+    } else {
+        socket.addEventListener('open', function() {
+            socket.send(message);
+        });
+    }
+}
