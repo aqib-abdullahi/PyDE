@@ -54,26 +54,26 @@ class MySQLDBstorage:
         """closes  to release resources"""
         MySQLDBstorage.__session.close()
 
-    """USER ACTIONS"""
-    def add_user(self, UserID,
-                 FirstName,
-                 LastName,
-                 Email,
-                 Password,
-                 Container):
-        """ Adds user to db
-        """
-        try:
-            user = User(UserID=UserID,
-                        FirstName=FirstName,
-                        LastName=LastName,
-                        Email=Email,
-                        Password=Password,
-                        Container=Container)
-            session = self.__session
-            session.add(user)
-            session.commit()
-        except Exception:
-            session.rollback()
-            user = None
-        return user
+    # """USER ACTIONS"""
+    # def add_user(self, UserID,
+    #              FirstName,
+    #              LastName,
+    #              Email,
+    #              Password,
+    #              Container):
+    #     """ Adds user to db
+    #     """
+    #     try:
+    #         user = User(UserID=UserID,
+    #                     FirstName=FirstName,
+    #                     LastName=LastName,
+    #                     Email=Email,
+    #                     Password=Password,
+    #                     Container=Container)
+    #         session = self.__session
+    #         session.add(user)
+    #         session.commit()
+    #     except Exception:
+    #         session.rollback()
+    #         user = None
+    #     return user
