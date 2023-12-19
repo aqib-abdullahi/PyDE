@@ -12,16 +12,16 @@
     <div class="container">
         <h2><b>Login</b></h2>
         <div class="inputs">
-            <form action="signup.html" method="post">
-                <input type="text" name="" placeholder="Enter your email" id="email" class="input" required>
-                <input type="password" name="" placeholder="Enter your password" id="password" class="input" required>
+            <form action="{{ url_for('auth.login') }}" method="post">
+                <input type="text" name="Email" placeholder="Enter your email" id="email" class="input" required>
+                <input type="password" name="Password" placeholder="Enter your password" id="password" class="input" required>
                 <a href="#" class="forgot-password">Forgot password?</a><br>
                 <div class="login-btn">
                     <input type="submit" value="Login" id="button">
                 </div>
             </form>
         </div>
-        <h5>Don't have an account? <a href="#">Signup</a></h5>
+        <h5>Don't have an account? <a href="{{ url_for('auth.Signup') }}">Signup</a></h5>
     </div>
 
 </body>

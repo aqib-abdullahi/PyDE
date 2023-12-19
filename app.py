@@ -10,6 +10,7 @@ from app.auth.auth import auth
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'thisisasecret'
 login_manager = LoginManager()
 login_manager.init_app(app)
 cors = CORS(app)

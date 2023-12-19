@@ -12,7 +12,7 @@
     <div class="container">
         <h2><b>Signup</b></h2>
         <div class="inputs">
-            <form action="#" method="post">
+            <form action="{{ url_for('auth.Signup')}}" method="post">
                 <input type="text" name="First name" placeholder="First name" id="email" class="input" required>
                 <input type="text" name="Last name" placeholder="Last name" id="email" class="input" required>
                 <input type="text" name="Email" placeholder="Enter your email" id="email" class="input" required>
@@ -23,7 +23,7 @@
                 </div>
             </form>
         </div>
-        <h5>Already have an account? <a href="#">Login</a></h5>
+        <h5>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></h5>
     </div>
 
 </body>
