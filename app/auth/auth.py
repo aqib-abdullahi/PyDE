@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """authentication module
 """
 from app.models.engine.mysql import MySQLDBstorage
@@ -6,7 +7,6 @@ from passlib.hash import bcrypt_sha256
 from app.models import storage
 from app.models.user import User
 from app.auth.db import authDB
-# from ....PyDE import app
 from flask_login import login_user,current_user, login_required, logout_user
 
 
@@ -17,7 +17,7 @@ def Signup():
     """Logs user into signed up account
     """
     if request.method == 'GET':
-        return render_template('signup.html')
+        return render_template('signup.html', email_exists=False)
     elif request.method == 'POST':
         FirstName = request.form['First name']
         LastName = request.form['Last name']
@@ -33,15 +33,16 @@ def Signup():
                         Password=Password,
                         Container="None yet",
                         Authenticated=False)
-        if user:
-            return render_template('login.html')
-        
-        return render_template('signup.html')
+        if (user == "user exists"):
+            email_exists = True
+            return render_template('signup.html', email_exists=email_exists)
+        elif user:
+            return redirect(url_for('auth.login'))
     
 @auth.route('/Login', methods=['GET', 'POST'], strict_slashes=False)
 def login():
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('login.html', form_data=None)
     elif request.method == 'POST':
         Email = request.form['Email']
         Password = request.form['Password']
@@ -63,7 +64,9 @@ def login():
                 session.close()
             
             login_user(user, remember=False)
-            # return redirect(url_for('signup'))
             return render_template('IDE.html')
         else:
-            return render_template('login.html')
+            form_data = {
+                "Email": Email
+            }
+            return render_template('login.html', form_data=form_data)

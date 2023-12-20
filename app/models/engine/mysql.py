@@ -1,6 +1,7 @@
+#!/usr/bin/env python3
 """Defines the engine for MySQL database"""
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker, scoped_session, joinedload
+from sqlalchemy.orm import sessionmaker, scoped_session
 import os
 from dotenv import load_dotenv
 from app.models.base import Base

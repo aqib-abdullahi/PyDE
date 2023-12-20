@@ -11,9 +11,14 @@
 <body>
     <div class="container">
         <h2><b>Login</b></h2>
+        {% if form_data %}
+        <h6><b>Invalid Email or Password</b></h6>
+        {% endif %}
         <div class="inputs">
             <form action="{{ url_for('auth.login') }}" method="post">
-                <input type="text" name="Email" placeholder="Enter your email" id="email" class="input" required>
+                {% if form_data %}
+                <input type="text" name="Email" placeholder="Enter your email" id="email" class="input" required value="{{ form_data.Email }}">{% else %}
+                <input type="text" name="Email" placeholder="Enter your email" id="email" class="input" required> {% endif %}
                 <input type="password" name="Password" placeholder="Enter your password" id="password" class="input" required>
                 <a href="#" class="forgot-password">Forgot password?</a><br>
                 <div class="login-btn">

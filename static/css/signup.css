@@ -66,3 +66,8 @@ h5 {
     font-size: 1rem;
     text-align: center;
 }
+
+h5 a {
+    color: rgb(5, 152, 103);
+    text-decoration: none;
+}

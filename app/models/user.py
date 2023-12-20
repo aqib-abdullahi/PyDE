@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """User class"""
 from app.models.base import Base
 from flask_login import UserMixin
@@ -14,7 +15,7 @@ class User(Base, UserMixin):
     UserID = Column(Integer, primary_key=True, autoincrement=True)
     FirstName = Column(String(50))
     LastName = Column(String(50))
-    Email = Column(String(100))
+    Email = Column(String(100),unique=True)
     Password  = Column(String(100))
     Container = Column(String(150), nullable=True)
     Authenticated = Column(Boolean, default=False)

@@ -1,9 +1,10 @@
-from flask import Flask, render_template, Blueprint
-from dotenv import load_dotenv
-import os
+#!/usr/bin/env python3
 """main module
 containing main page
 """
+from flask import Flask, render_template, Blueprint
+from dotenv import load_dotenv
+import os
 
 
 main = Blueprint('main', __name__)
