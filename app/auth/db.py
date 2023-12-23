@@ -27,7 +27,6 @@ class authDB:
             return True
         return False
     
-
     def add_user(self,
                  FirstName,
                  LastName,

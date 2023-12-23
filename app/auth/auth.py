@@ -7,6 +7,7 @@ from passlib.hash import bcrypt_sha256
 from app.models import storage
 from app.models.user import User
 from app.auth.db import authDB
+from app.main.main import main
 from flask_login import login_user,current_user, login_required, logout_user
 
 
@@ -64,7 +65,7 @@ def login():
                 session.close()
             
             login_user(user, remember=False)
-            return render_template('IDE.html')
+            return redirect(url_for('main.index'))
         else:
             form_data = {
                 "Email": Email

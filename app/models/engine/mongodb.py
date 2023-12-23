@@ -20,35 +20,55 @@ class MongoDBstorage:
     __client = None
 
     def __init__(self):
-        self.__client = MongoClient(mongodb_host, mongodb_port)
+        """Initializes the mongodb 
+        database
+        """
+        self.__client = MongoClient(f"mongodb://{mongodb_host}:{mongodb_port}")
         self.__db = self.__client[mongodb_name]
 
     def switch_db(self, database):
+        """switches to the 'database'
+        """
         self.__db = self.__client[database]
 
     def create_col(self, collection_name):
+        """Createes a collection 
+        'collection_name'
+        """
         self.__db.create_collection(collection_name)
 
     def insert_one(self, collection_name, data):
+        """Inserts a single data into the datase
+        """
         collection = self.__db[collection_name]
         return collection.insert_one(data)
     
     def insert_many(self, collection_name, data_list):
+        """Inserts multiple data into the databse
+        """
         collection = self.__db[collection_name]
         return collection.insert_many(data_list)
 
     def find(self, collection_name, query=None):
+        """Searches or finds data in the database
+        """
         collection = self.__db[collection_name]
         return collection.find(query)
 
     def update_one(self, collection_name, query, new_values):
+        """Updates the database with a single data
+        """
         collection = self.__db[collection_name]
         return collection.update_one(query, {"$set": new_values})
     
     def update_many(self, collection_name, query, new_values):
+        """Updates the database with multiple data
+        """
         collection = self.__db[collection_name]
         return collection.update_many(query, {"$set": new_values})
 
     def delete_one(self, collection_name, query):
+        """deletes data from the databse
+        """
         collection = self.__db[collection_name]
         return collection.delete_one(query)

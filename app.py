@@ -9,6 +9,7 @@ from app.models import storage
 from app.main.main import main
 from app.auth.auth import auth
 from app.auth.db import authDB
+from app.models import mongodb_store
 
 
 app = Flask(__name__)
