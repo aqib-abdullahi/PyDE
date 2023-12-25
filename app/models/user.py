@@ -36,11 +36,11 @@ class User(Base, UserMixin):
 
     def get_id(self):
         """Return the email address to satisfy Flask-Login's requirements."""
-        return self.Email
-    
-    def get_userid(self):
-        """returns User ID """
         return self.UserID
+    
+    # def get_userid(self):
+    #     """returns User ID """
+    #     return self.UserID
 
     def is_authenticated(self):
         """Return True if the user is authenticated."""

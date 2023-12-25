@@ -2,9 +2,10 @@
 """database; users
 authentication
 """
-from app.models.user import User
 from passlib.hash import bcrypt_sha256
 from app.models import storage
+from app.models.user import User
+from flask_login import login_user
 
 
 class authDB:
@@ -59,20 +60,21 @@ class authDB:
                 user = None
             return user
 
-    def verify_user(self, Email, Password):
+    def verify_user(self, email, password):
         """Verifies the existence of user with the
         given parameters"""
         session = storage.get_session()
-        user = session.query(User).filter_by(Email = Email).first()
+        user = session.query(User).filter_by(Email = email).first()
         session.close()
         if user:
-            session = storage.get_session()
-            user_hashed = session.query(User).filter(User.Email == Email).first()
-            session.close
-            if user_hashed:
-                hashed_password = user_hashed.Password
-                valid = bcrypt_sha256.verify(Password, hashed_password)
-                return True
+            user_hashed = user.Password
+            if user_hashed is not None:
+                hashed_password = user_hashed
+                validity = bcrypt_sha256.verify(password, user_hashed)
+                if validity is not None:
+                    return True
+                else:
+                    return False
             else:
                 return False
         return False

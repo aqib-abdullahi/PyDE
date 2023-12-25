@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """authentication module
 """
-from app.models.engine.mysql import MySQLDBstorage
 from flask import Blueprint, request, render_template, redirect, url_for
 from passlib.hash import bcrypt_sha256
 from app.models import storage
 from app.models.user import User
 from app.auth.db import authDB
-from app.main.main import main
+from app.models.engine.mysql import MySQLDBstorage
 from flask_login import login_user,current_user, login_required, logout_user
 
 
@@ -45,29 +44,52 @@ def login():
     if request.method == 'GET':
         return render_template('login.html', form_data=None)
     elif request.method == 'POST':
-        Email = request.form['Email']
-        Password = request.form['Password']
+        email = request.form['Email']
+        password = request.form['Password']
 
         session = storage.get_session()
-        user = session.query(User).filter_by(Email = Email).first()
+        user = session.query(User).filter_by(Email = email).first()
         session.close()
         authenticateDB = authDB()
-        verified_user = authenticateDB.verify_user(Email,Password)
-        if verified_user:
+        verified_user = authenticateDB.verify_user(email, password)
+        if verified_user is not None:
             session = storage.get_session()
-            user.Authenticated = True
             try:
+                user.Authenticated = True
                 storage.new(user)
                 storage.save()
+                login_user(user, remember=False)
+                from app.main.main import main
+                return redirect(url_for('main.index'))
             except Exception as e:
                 print(e)
                 session.rollback()
                 session.close()
-            
-            login_user(user, remember=False)
-            return redirect(url_for('main.index'))
+                form_data = {
+                "Email": email
+                }
+                return render_template('login.html', form_data=form_data)
         else:
             form_data = {
-                "Email": Email
+                "Email": email
             }
             return render_template('login.html', form_data=form_data)
+
+@auth.route('/Logout', methods=['GET', 'POST'], strict_slashes=False)
+def logout():
+    """Logs out the user from the session
+    """
+    if current_user.is_authenticated:
+        user = current_user
+        session = storage.get_session()
+        try:
+            user.Authenticated = False
+            storage.new(user)
+            storage.save()
+        except Exception as e:
+            session.rollback()
+            session.close()
+        logout_user()
+        return redirect(url_for('auth.login'))
+
+    return redirect(url_for('auth.login'))
