@@ -169,16 +169,12 @@ ul.treeRoot li:before {
     display: block;
 }
 
-
-/* fontawesome */
-
 i {
     padding-left: 2px;
 }
 
 #user-icon {
     color: white;
-    /* float: right; */
     position: absolute;
     right: 0;
     margin-right: 1.2rem;
@@ -186,22 +182,12 @@ i {
     font-size: 1.1rem;
 }
 
-
-/* #down-arrow {
-    color: white;
-} */
-
-
-/* #user-icon: */
-
 .user-icon {
-    /* float: right; */
     position: absolute;
     right: 0;
     margin-right: 1rem;
     margin-top: .7rem;
     font-size: 1.1rem;
-    /* border: ; */
 }
 
 #user-icon:hover {
@@ -219,24 +205,13 @@ i {
     border: none;
 }
 
-
-/* .user-profile:hover {
-    background-color: black;
-    border: none;
-} */
-
-
-/* profile */
-
 .acc-info {
     width: 4rem;
     height: 4rem;
     position: absolute;
     top: 1.5rem;
     right: 1rem;
-    /* background-color: #eacece; */
     z-index: 2;
-    /* padding: 2px; */
     padding-top: 10px;
     padding-bottom: 0;
     text-align: center;
@@ -254,27 +229,108 @@ i {
 .acc-info a {
     text-decoration: none;
     color: #fff;
-    /* margin: 2px; */
-    /* margin-top: 20px; */
-    /* padding-top: 20px; */
     font-family: 'Ubuntu Mono';
     font-size: .9rem;
-    /* font-weight: ; */
-    /* font-weight: 600; */
-    /* line-height: 1rem; */
 }
 
 .acc-info>a:hover {
     text-decoration: none;
     color: #fff;
-    /* margin: 2px; */
-    /* margin-top: 20px; */
-    /* padding-top: 20px; */
     font-family: 'Ubuntu Mono';
     font-size: .9rem;
-    /* color: #272822; */
     color: cadetblue;
-    /* font-weight: ; */
-    /* font-weight: 600; */
-    /* line-height: 1rem; */
 }
+
+.popfolder {
+    width: 30%;
+    height: 15%;
+    position: absolute;
+    padding: 15px 10px;
+    top: 30%;
+    left: 35vw;
+    z-index: 1;
+    background-color: white;
+    border-radius: 10px;
+    /* display: grid; */
+    display: none;
+    place-items: center;
+}
+
+.popfile {
+    width: 30%;
+    height: 15%;
+    position: absolute;
+    padding: 15px 10px;
+    top: 30%;
+    left: 35vw;
+    z-index: 1;
+    background-color: white;
+    border-radius: 10px;
+    /* display: grid; */
+    display: none;
+    place-items: center;
+}
+
+.fileInput {
+    font-size: 1rem;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 4%;
+    border-radius: 6px;
+    width: 95%;
+    border: solid 2px rgb(170, 170, 167);
+}
+
+#button {
+    width: 5rem;
+    height: 1.5rem;
+    margin-top: .5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    background-color: rgb(5, 152, 103);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    float: right;
+}
+
+.cancel-btn {
+    margin-top: .5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    float: right;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#cancelfile-btn {
+    color: black;
+}
+
+#cancelfolder-btn {
+    color: black;
+}
+
+#cancelfolder-btn:hover {
+    cursor: pointer;
+}
+
+#cancelfile-btn:hover {
+    cursor: pointer;
+}
+
+
+/* .smoke {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: #5c5a5a;
+    z-index: 0;
+} */

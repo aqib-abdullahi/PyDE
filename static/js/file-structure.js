@@ -1,4 +1,14 @@
 const treeRootElements = document.querySelectorAll("ul.treeRoot li span");
+const cancelfolder = document.getElementById('cancelfolder-btn');
+const cancelfile = document.getElementById('cancelfile-btn');
+const popupfile = document.querySelector('.popfile');
+const popupfolder = document.querySelector('.popfolder');
+const folderNameInput = document.getElementById('folderNameInput');
+// const fileNameInput = document.getElementById('fileNameInput');
+const folderName = folderNameInput.value;
+// const fileName = fileNameInput.value;
+const folderForm = document.querySelector('.folderForm');
+const fileForm = document.querySelector('.fileForm');
 
 treeRootElements.forEach(function(element) {
     element.addEventListener("click", function() {
@@ -20,6 +30,10 @@ treeRootElements.forEach(function(element) {
     iconClasses.forEach(cls => {
         iconElement.classList.add(cls);
     });
+    // test
+    // iconElement.addEventListener('click', function() {
+    //     console.log('i clicked it')
+    // })
     element.parentNode.insertBefore(iconElement, element);
     // element.parentNode.appendChild(iconElement, element)
     if (iconClass === 'fa-regular fa-folder-open') {
@@ -43,6 +57,62 @@ treeRootElements.forEach(function(element) {
         element.parentNode.insertBefore(iconelement, element.nextSibling);
         // inserts folder icon
         element.parentNode.insertBefore(folderElement, element.nextSibling);
+        folderElement.addEventListener('click', function() {
+            popupfolder.style.display = 'grid';
+            console.log('clicked')
+        })
+        iconelement.addEventListener('click', function() {
+            console.log('clicked')
+            popupfile.style.display = 'grid';
+        })
     }
 
 });
+
+cancelfile.addEventListener('click', function() {
+    popupfile.style.display = 'none';
+})
+
+cancelfolder.addEventListener('click', function() {
+    popupfolder.style.display = 'none';
+})
+
+
+
+// SAVE FILE
+function uploadFile(event) {
+    event.preventDefault();
+
+
+}
+
+fileForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    const fileNameInput = document.getElementById('fileNameInput');
+    const fileName = fileNameInput.value;
+
+    fileInfo = {
+        "file_name": fileName,
+        "parent_folder": "Python"
+    }
+
+    fetch('/api/v1/users/1/files', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(fileInfo)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('File uploaded successsfully: ', data);
+        })
+        .catch(error => {
+            console.error('Problem uploading file: ', error);
+        })
+})

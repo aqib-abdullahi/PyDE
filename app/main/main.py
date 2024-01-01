@@ -21,9 +21,11 @@ def index():
     ip_address = os.getenv('IP_ADDRESS')
     container_id = os.getenv('CONTAINER_ID')
     container_port = os.getenv('CONTAINER_PORT')
+    user_id = current_user.get_id()
     if current_user.is_authenticated:
         return render_template('IDE.html',
                             ip_address=ip_address,
+                            user_id = user_id,
                             container_id=container_id,
                             container_port=container_port)
     else:
