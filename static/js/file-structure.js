@@ -4,11 +4,13 @@ const cancelfile = document.getElementById('cancelfile-btn');
 const popupfile = document.querySelector('.popfile');
 const popupfolder = document.querySelector('.popfolder');
 const folderNameInput = document.getElementById('folderNameInput');
-// const fileNameInput = document.getElementById('fileNameInput');
 const folderName = folderNameInput.value;
-// const fileName = fileNameInput.value;
 const folderForm = document.querySelector('.folderForm');
 const fileForm = document.querySelector('.fileForm');
+const popfoldersmoke = document.querySelector('.popfoldersmoke');
+const popfilesmoke = document.querySelector('.popfilesmoke');
+const userId = document.getElementById('userId').value;
+let parentFolder;
 
 treeRootElements.forEach(function(element) {
     element.addEventListener("click", function() {
@@ -30,12 +32,9 @@ treeRootElements.forEach(function(element) {
     iconClasses.forEach(cls => {
         iconElement.classList.add(cls);
     });
-    // test
-    // iconElement.addEventListener('click', function() {
-    //     console.log('i clicked it')
-    // })
+
     element.parentNode.insertBefore(iconElement, element);
-    // element.parentNode.appendChild(iconElement, element)
+
     if (iconClass === 'fa-regular fa-folder-open') {
         const originalIconClass = "fa-solid fa-file-circle-plus";
         // file icon class
@@ -58,12 +57,19 @@ treeRootElements.forEach(function(element) {
         // inserts folder icon
         element.parentNode.insertBefore(folderElement, element.nextSibling);
         folderElement.addEventListener('click', function() {
+            popupfile.style.display = 'none';
             popupfolder.style.display = 'grid';
-            console.log('clicked')
+            popfoldersmoke.style.display = 'block';
+            // test
+            parentFolder = this.parentElement.innerText
+            console.log(parentFolder);
         })
         iconelement.addEventListener('click', function() {
-            console.log('clicked')
+            popupfolder.style.display = 'none';
             popupfile.style.display = 'grid';
+            popfilesmoke.style.display = 'block';
+            parentFolder = this.parentElement.innerText
+            console.log(parentFolder);
         })
     }
 
@@ -71,32 +77,39 @@ treeRootElements.forEach(function(element) {
 
 cancelfile.addEventListener('click', function() {
     popupfile.style.display = 'none';
+    popfilesmoke.style.display = 'none';
 })
 
 cancelfolder.addEventListener('click', function() {
     popupfolder.style.display = 'none';
+    popfoldersmoke.style.display = 'none';
 })
 
+popfoldersmoke.addEventListener('click', function() {
+    popfoldersmoke.style.display = 'none';
+    popupfolder.style.display = 'none';
+})
 
+popfilesmoke.addEventListener('click', function() {
+    popfilesmoke.style.display = 'none';
+    popupfile.style.display = 'none';
+})
 
-// SAVE FILE
-function uploadFile(event) {
-    event.preventDefault();
-
-
-}
-
+// SAVE FILE (file upload to DB)
 fileForm.addEventListener("submit", function(event) {
     event.preventDefault();
+    popupfile.style.display = 'none';
+    popupfolder.style.display = 'none';
+    popfoldersmoke.style.display = 'none';
+    popfilesmoke.style.display = 'none'
     const fileNameInput = document.getElementById('fileNameInput');
     const fileName = fileNameInput.value;
-
     fileInfo = {
         "file_name": fileName,
-        "parent_folder": "Python"
+        "parent_folder": parentFolder
     }
 
-    fetch('/api/v1/users/1/files', {
+    fetch(`/api/v1/users/${userId}/files`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -116,3 +129,24 @@ fileForm.addEventListener("submit", function(event) {
             console.error('Problem uploading file: ', error);
         })
 })
+
+// LOAD  USER FILES FROM DB
+const userFiles = fetch(`/api/v1/users/${userId}/files`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Files loaded successsfully: ', data);
+    })
+    .catch(error => {
+        console.error('Problem loading files: ', error);
+    })
+console.log(userFiles)

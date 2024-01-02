@@ -39,6 +39,15 @@
         <aside class="files" id="resizeableElementId ">
             <h3>Files and Folders</h3>
             <!-- file -->
+            <div class="popfilesmoke">
+                <!-- <div class="popfile" id="addFile">
+                    <button class="cancel-btn"><i class="fa-solid fa-xmark" id="cancelfile-btn"></i></button>
+                    <form action="#" method="post" class="fileForm">
+                        <input type="text" placeholder="Enter file name" class="fileInput" id="fileNameInput">
+                        <input type="submit" value="SAVE" id="button">
+                    </form>
+                </div> -->
+            </div>
             <div class="popfile" id="addFile">
                 <button class="cancel-btn"><i class="fa-solid fa-xmark" id="cancelfile-btn"></i></button>
                 <form action="#" method="post" class="fileForm">
@@ -47,6 +56,15 @@
                 </form>
             </div>
             <!-- folder -->
+            <div class="popfoldersmoke">
+                <!-- <div class="popfolder" id="addFolder">
+                    <button class="cancel-btn"><i class="fa-solid fa-xmark" id="cancelfolder-btn"></i></button>
+                    <form action="#" method="post" class="folderForm">
+                        <input type="text" placeholder="Enter folder name" class="fileInput" id="folderNameInput">
+                        <input type="submit" value="SAVE" id="button">
+                    </form>
+                </div> -->
+            </div>
             <div class="popfolder" id="addFolder">
                 <button class="cancel-btn"><i class="fa-solid fa-xmark" id="cancelfolder-btn"></i></button>
                 <form action="#" method="post" class="folderForm">
@@ -100,7 +118,7 @@
         </div>
     </div>
     <input type="hidden" name="ip" id="ipAddress" value="{{ ip_address }}">
-    <input type="hidden" name="user_id" id="userId" value="{{ user_id}}">
+    <input type="hidden" name="user_id" id="userId" value="{{ user_id }}">
     <input type="hidden" name="container_id" id="containerId" value="{{ container_id }}">
     <input type="hidden" name="container_port" id="containerPort" value="{{ container_port }}">
 
