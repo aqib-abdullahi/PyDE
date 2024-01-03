@@ -209,6 +209,26 @@ folderForm.addEventListener("submit", function(event) {
         .catch(error => {
             console.error('Problem uploading folder: ', error);
         })
-    userFiles = getUserFiles(userId)
-    console.log(userFiles)
+    getUserFiles(userId).then(files => {
+            usersfiles = files;
+            const filesData = usersfiles;
+
+            for (let i = 0; i < filesData.files.length; i++) {
+                const file = filesData.files[i];
+                if (file.file_name) {
+                    console.log(`File name ${i + 1}: ${file.file_name}`);
+                    console.log(`File id ${i + 1}: ${file._id}`);
+                    console.log(`Parent folder name ${i + 1}: ${file.parent_folder}`)
+                }
+                if (file.folder_name) {
+                    console.log(`Folder name ${i + 1}: ${file.folder_name}`);
+                    console.log(`Folder id ${i + 1}: ${file._id}`);
+                    console.log(`Parent folder name ${i + 1}: ${file.parent_folder}`);
+                }
+
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user files:', error);
+        });
 })
