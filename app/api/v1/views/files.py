@@ -30,10 +30,11 @@ def create_file(user_id):
     """
     data = request.json
     file_name = data.get('file_name')
+    folder_name = data.get('folder_name')
     file_contents = data.get('file_contents')
     parent = data.get('parent_folder')
-    if not file_name:
-        return jsonify({'message': 'File name is required'}), 400
+    if not file_name and not folder_name:
+        return jsonify({'message': 'File or folder name is required'}), 400
     
     data['created_at'] = datetime.now()
     data['updated_at'] = datetime.now()
@@ -44,6 +45,7 @@ def create_file(user_id):
                                                 'user_id': user_id,
                                                 'file_name': file_name,
                                                 'file_contents': file_contents,
+                                                'folder_name': folder_name,
                                                 'parent_folder': parent,
                                                 'created_at': data['created_at'],
                                                 'updated_at': data['updated_at']

@@ -251,16 +251,12 @@ i {
     z-index: 5;
     background-color: white;
     border-radius: 10px;
-    /* display: grid; */
     display: none;
     place-items: center;
 }
 
 .popfoldersmoke,
 .popfilesmoke {
-    /* background-color: #272822;
-    width: 100%;
-    height: 100%; */
     z-index: 4;
     position: absolute;
     width: 100vw;
@@ -286,7 +282,6 @@ i {
     z-index: 5;
     background-color: white;
     border-radius: 10px;
-    /* display: grid; */
     display: none;
     place-items: center;
 }
@@ -345,12 +340,3 @@ i {
 #cancelfile-btn:hover {
     cursor: pointer;
 }
-
-
-/* .smoke {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    background-color: #5c5a5a;
-    z-index: 0;
-} */

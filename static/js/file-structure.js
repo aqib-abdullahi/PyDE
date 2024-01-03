@@ -3,14 +3,13 @@ const cancelfolder = document.getElementById('cancelfolder-btn');
 const cancelfile = document.getElementById('cancelfile-btn');
 const popupfile = document.querySelector('.popfile');
 const popupfolder = document.querySelector('.popfolder');
-const folderNameInput = document.getElementById('folderNameInput');
-const folderName = folderNameInput.value;
 const folderForm = document.querySelector('.folderForm');
 const fileForm = document.querySelector('.fileForm');
 const popfoldersmoke = document.querySelector('.popfoldersmoke');
 const popfilesmoke = document.querySelector('.popfilesmoke');
 const userId = document.getElementById('userId').value;
 let parentFolder;
+let usersfiles;
 
 treeRootElements.forEach(function(element) {
     element.addEventListener("click", function() {
@@ -60,16 +59,13 @@ treeRootElements.forEach(function(element) {
             popupfile.style.display = 'none';
             popupfolder.style.display = 'grid';
             popfoldersmoke.style.display = 'block';
-            // test
             parentFolder = this.parentElement.innerText
-            console.log(parentFolder);
         })
         iconelement.addEventListener('click', function() {
             popupfolder.style.display = 'none';
             popupfile.style.display = 'grid';
             popfilesmoke.style.display = 'block';
             parentFolder = this.parentElement.innerText
-            console.log(parentFolder);
         })
     }
 
@@ -95,6 +91,30 @@ popfilesmoke.addEventListener('click', function() {
     popupfile.style.display = 'none';
 })
 
+// LOAD  USER FILES FROM DB
+const getUserFiles = (userId) => {
+    return fetch(`/api/v1/users/${userId}/files`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Files loaded successsfully: ', data);
+            return data;
+        })
+        .catch(error => {
+            console.error('Problem loading files: ', error);
+            throw error;
+        })
+}
+
 // SAVE FILE (file upload to DB)
 fileForm.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -104,7 +124,7 @@ fileForm.addEventListener("submit", function(event) {
     popfilesmoke.style.display = 'none'
     const fileNameInput = document.getElementById('fileNameInput');
     const fileName = fileNameInput.value;
-    fileInfo = {
+    const fileInfo = {
         "file_name": fileName,
         "parent_folder": parentFolder
     }
@@ -128,25 +148,67 @@ fileForm.addEventListener("submit", function(event) {
         .catch(error => {
             console.error('Problem uploading file: ', error);
         })
+    getUserFiles(userId).then(files => {
+            usersfiles = files;
+            const filesData = usersfiles;
+
+            for (let i = 0; i < filesData.files.length; i++) {
+                const file = filesData.files[i];
+                if (file.file_name) {
+                    console.log(`File name ${i + 1}: ${file.file_name}`);
+                    console.log(`File id ${i + 1}: ${file._id}`);
+                    console.log(`Parent folder name ${i + 1}: ${file.parent_folder}`);
+                }
+                if (file.folder_name) {
+                    console.log(`Folder name ${i + 1}: ${file.folder_name}`);
+                    console.log(`Folder id ${i + 1}: ${file._id}`);
+                    console.log(`Parent folder name ${i + 1}: ${file.parent_folder}`);
+                }
+
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user files:', error);
+        });
+
+
+
 })
 
-// LOAD  USER FILES FROM DB
-const userFiles = fetch(`/api/v1/users/${userId}/files`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Files loaded successsfully: ', data);
-    })
-    .catch(error => {
-        console.error('Problem loading files: ', error);
-    })
-console.log(userFiles)
+// SAVE FOLDER
+folderForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    popupfile.style.display = 'none';
+    popupfolder.style.display = 'none';
+    popfoldersmoke.style.display = 'none';
+    popfilesmoke.style.display = 'none'
+    const folderNameInput = document.getElementById('folderNameInput');
+    const folderName = folderNameInput.value;
+    const folderInfo = {
+        "folder_name": folderName,
+        "parent_folder": parentFolder,
+        "children": null
+    }
+
+    fetch(`/api/v1/users/${userId}/files`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(folderInfo)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Folder uploaded successsfully: ', data);
+        })
+        .catch(error => {
+            console.error('Problem uploading folder: ', error);
+        })
+    userFiles = getUserFiles(userId)
+    console.log(userFiles)
+})
