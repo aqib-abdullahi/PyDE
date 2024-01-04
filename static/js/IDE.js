@@ -32,3 +32,37 @@ const profiler = document.getElementById('user-icon')
 profiler.addEventListener('click', function() {
     dropDown.classList.toggle('block')
 });
+
+// function uploads file to container
+function uploadFileToContainer(filename, fileContent) {
+    const message = `echo "${fileContent}" > ${filename} \n`
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(message);
+    } else {
+        socket.addEventListener('open', function() {
+            socket.send(message);
+        });
+    }
+}
+
+// function uploads file an run on container
+function runFileOnContainer(filename, fileContent) {
+    const message = `echo '${fileContent}' > ${filename} \n`
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(message);
+    } else {
+        socket.addEventListener('open', function() {
+            socket.send(message);
+        });
+    }
+    socket.send(`chmod 755 ${filename}\n`);
+    socket.send(`./${filename}\n`);
+}
+
+// exports code
+const runBtn = document.querySelector('.run-btn');
+runBtn.addEventListener('click', function() {
+    codes = editor.getValue();
+    console.log(codes);
+    runFileOnContainer("a.py", codes);
+})
