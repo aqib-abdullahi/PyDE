@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 ip = os.getenv('IP_ADDRESS')
 remote_docker_client = docker.DockerClient(
-    base_url = "tcp://172.20.10.2:2375"
+    base_url = "tcp://{ip}:2375"
 )
 auth = Blueprint('auth', __name__)
 
