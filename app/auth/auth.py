@@ -8,8 +8,16 @@ from app.models.user import User
 from app.auth.db import authDB
 from app.models.engine.mysql import MySQLDBstorage
 from flask_login import login_user,current_user, login_required, logout_user
+import docker
+import os
+from dotenv import load_dotenv
 
 
+load_dotenv()
+ip = os.getenv('IP_ADDRESS')
+remote_docker_client = docker.DockerClient(
+    base_url = "tcp://172.20.10.2:2375"
+)
 auth = Blueprint('auth', __name__)
 
 @auth.route('/Signup', methods=['GET', 'POST'], strict_slashes=False)
@@ -23,6 +31,7 @@ def Signup():
         LastName = request.form['Last name']
         Email = request.form['Email']
         Password = request.form['Password']
+        Container = str(FirstName)
         Repeat_password = request.form['Confirm password']
 
         authenticateDB = authDB()
@@ -31,12 +40,31 @@ def Signup():
                         LastName=LastName,
                         Email=Email,
                         Password=Password,
-                        Container="None yet",
+                        Container=Container,
                         Authenticated=False)
         if (user == "user exists"):
             email_exists = True
             return render_template('signup.html', email_exists=email_exists)
         elif user:
+            container_id = remote_docker_client.containers.run('python-container',
+                                                command="/bin/bash",
+                                                name=Container,
+                                                stdin_open=True,
+                                                tty=True,
+                                                detach=True)
+            print(container_id)
+
+            py_version = container_id.exec_run("python --version")
+            print(py_version)
+            # update package
+            # update_command = "apt-get update"
+            # update_result = container_id.exec_run(update_command)
+            # print(update_result.output.decode('utf-8'))
+
+            # Install python3
+            # install = "apt-get install -y python3"
+            # install_result = container_id.exec_run(install)
+            # print(install_result.output.decode('utf-8'))
             return redirect(url_for('auth.login'))
     
 @auth.route('/Login', methods=['GET', 'POST'], strict_slashes=False)
