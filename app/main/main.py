@@ -19,7 +19,7 @@ def index():
     """Main page
     """
     ip_address = os.getenv('IP_ADDRESS')
-    container_id = os.getenv('CONTAINER_ID')
+    container_id = current_user.Container
     container_port = os.getenv('CONTAINER_PORT')
     user_id = current_user.get_id()
     if current_user.is_authenticated:

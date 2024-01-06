@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 ip = os.getenv('IP_ADDRESS')
 remote_docker_client = docker.DockerClient(
-    base_url = "tcp://{ip}:2375"
+    base_url =f"tcp://{ip}:2375"
 )
 auth = Blueprint('auth', __name__)
 
@@ -54,17 +54,25 @@ def Signup():
                                                 detach=True)
             print(container_id)
 
-            py_version = container_id.exec_run("python --version")
-            print(py_version)
-            # update package
-            # update_command = "apt-get update"
-            # update_result = container_id.exec_run(update_command)
-            # print(update_result.output.decode('utf-8'))
+            session = storage.get_session()
+            user = session.query(User).filter_by(Email = Email).first()
+            session.close()
+            try:
+                container = str(container_id)
+                containerID = container.split(': ')[1][:-1]
+                user.Container = containerID
+                storage.new(user)
+                storage.save()
+            except Exception as e:
+                print(e)
+                session.rollback()
+                session.close()
 
-            # Install python3
-            # install = "apt-get install -y python3"
-            # install_result = container_id.exec_run(install)
-            # print(install_result.output.decode('utf-8'))
+            # PATH CONFIG
+            symlink = container_id.exec_run("ln -s /usr/bin/python3 /usr/bin/python")
+            print(symlink.output.decode('utf-8'))
+
+            print(container_id.exec_run("python --version").output.decode('utf-8'))
             return redirect(url_for('auth.login'))
     
 @auth.route('/Login', methods=['GET', 'POST'], strict_slashes=False)

@@ -38,9 +38,12 @@ class User(Base, UserMixin):
         """Return the email address to satisfy Flask-Login's requirements."""
         return self.UserID
     
-    # def get_userid(self):
-    #     """returns User ID """
-    #     return self.UserID
+    def get(cls, id):
+        """Return user instance of id, return None if not exist"""
+        try:
+            return cls(id)
+        except UserWarning:
+            return None
 
     def is_authenticated(self):
         """Return True if the user is authenticated."""
