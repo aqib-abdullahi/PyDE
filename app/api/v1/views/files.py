@@ -8,9 +8,9 @@ from bson.objectid import ObjectId
 from flask_login import current_user
 from datetime import datetime
 
-api_v1 = Blueprint('api_v1', __name__)
+api_v1_users = Blueprint('api_v1_users', __name__)
 
-@api_v1.route('/users/<user_id>/files', methods=['GET'], strict_slashes=False)
+@api_v1_users.route('/<user_id>/files', methods=['GET'], strict_slashes=False)
 def get_files(user_id):
     """Gets all files and folders for a particular
     user
@@ -24,7 +24,7 @@ def get_files(user_id):
 
     return jsonify({'files': data})
 
-@api_v1.route('/users/<user_id>/files', methods=['POST'], strict_slashes=False)
+@api_v1_users.route('/<user_id>/files', methods=['POST'], strict_slashes=False)
 def create_file(user_id):
     """creates a file for a particular user
     """
@@ -57,7 +57,7 @@ def create_file(user_id):
     except Exception as e:
         return jsonify({"mesage": str(e)}), 500
 
-@api_v1.route('/users/<user_id>/files/<file_id>', methods=['DELETE'], strict_slashes=False)
+@api_v1_users.route('/<user_id>/files/<file_id>', methods=['DELETE'], strict_slashes=False)
 def delete_file(user_id, file_id):
     """deletes a file for a particular user
     using the file id"""
@@ -68,7 +68,7 @@ def delete_file(user_id, file_id):
     except Exception as e:
         return jsonify({'message': str(e)}), 404
 
-@api_v1.route('/users/<user_id>/files/<file_id>', methods=['PUT'], strict_slashes=False)
+@api_v1_users.route('/<user_id>/files/<file_id>', methods=['PUT'], strict_slashes=False)
 def update_file(user_id, file_id):
     """Updates the content of a file owned by a
     specific user

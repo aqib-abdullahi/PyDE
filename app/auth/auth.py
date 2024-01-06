@@ -3,21 +3,13 @@
 """
 from flask import Blueprint, request, render_template, redirect, url_for
 from passlib.hash import bcrypt_sha256
-from app.models import storage
+from app.models import storage, dockerEngine
 from app.models.user import User
 from app.auth.db import authDB
 from app.models.engine.mysql import MySQLDBstorage
 from flask_login import login_user,current_user, login_required, logout_user
-import docker
-import os
-from dotenv import load_dotenv
 
 
-load_dotenv()
-ip = os.getenv('IP_ADDRESS')
-remote_docker_client = docker.DockerClient(
-    base_url =f"tcp://{ip}:2375"
-)
 auth = Blueprint('auth', __name__)
 
 @auth.route('/Signup', methods=['GET', 'POST'], strict_slashes=False)
@@ -46,14 +38,7 @@ def Signup():
             email_exists = True
             return render_template('signup.html', email_exists=email_exists)
         elif user:
-            container_id = remote_docker_client.containers.run('python-container',
-                                                command="/bin/bash",
-                                                name=Container,
-                                                stdin_open=True,
-                                                tty=True,
-                                                detach=True)
-            print(container_id)
-
+            container_id = dockerEngine.spawn_container(Container)
             session = storage.get_session()
             user = session.query(User).filter_by(Email = Email).first()
             session.close()
@@ -68,11 +53,6 @@ def Signup():
                 session.rollback()
                 session.close()
 
-            # PATH CONFIG
-            symlink = container_id.exec_run("ln -s /usr/bin/python3 /usr/bin/python")
-            print(symlink.output.decode('utf-8'))
-
-            print(container_id.exec_run("python --version").output.decode('utf-8'))
             return redirect(url_for('auth.login'))
     
 @auth.route('/Login', methods=['GET', 'POST'], strict_slashes=False)
