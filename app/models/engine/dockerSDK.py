@@ -14,7 +14,7 @@ container_port = os.getenv('CONTAINER_PORT')
 class dockerSDK():
     """docker container interaction engine
     """
-    def __init__(self) -> None:
+    def __init__(self):
         """initializes with a connection"""
         self.remote_docker_client = docker.DockerClient(
             base_url =f"tcp://{ip_address}:{container_port}"
@@ -48,8 +48,11 @@ class dockerSDK():
         """Uploads file to container"""
         containerID = self.get_container_by_id(container_id)
         work_dir = "/PyDE"
-        result = containerID.exec_run(f'echo "{file_content}" > {work_dir}/{file_name}')
-        print(containerID.exec_run("ls -a"))
+        # print(containerID.exec_run("pwd").output.decode('utf-8'))
+        containerID.exec_run(f'touch {file_name}')
+        # filing = f'printf "{file_content}\n" > {file_name}'
+        # result = containerID.exec_run(filing)
+        result = containerID.put_archive(work_dir, data=file_content)
         return(result.output.decode('utf-8'))
     
     def download_file(self, container_id, file_name):
