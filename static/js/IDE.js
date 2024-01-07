@@ -1,3 +1,5 @@
+const containerID = document.getElementById('containerId').value;
+
 var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
     theme: 'monokai',
     mode: {
@@ -45,24 +47,67 @@ function uploadFileToContainer(filename, fileContent) {
     }
 }
 
-// function uploads file an run on container
-function runFileOnContainer(filename, fileContent) {
-    const message = `echo '${fileContent}' > ${filename} \n`
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.send(message);
-    } else {
-        socket.addEventListener('open', function() {
-            socket.send(message);
-        });
+function UploadFileToContainer(filename, fileContent) {
+    const fileInfo = {
+        "file_content": fileContent,
+        "file_name": filename
     }
-    socket.send(`chmod 755 ${filename}\n`);
-    socket.send(`./${filename}\n`);
+    return fetch(`/api/v1/container/${userId}/${containerID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(fileInfo)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('File uploaded successsfully: ', data);
+            return data;
+        })
+        .catch(error => {
+            console.error('Problem uploading file: ', error);
+            throw error;
+        })
+
 }
+
+function runFileOnContainer(filename, containerID) {
+    return fetch(`/api/v1/container/${userId}/${containerID}/${filename}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('File executed successsfully: ', data);
+            return data;
+        })
+        .catch(error => {
+            console.error('Problem executing file: ', error);
+            throw error;
+        })
+
+}
+
 
 // exports code
 const runBtn = document.querySelector('.run-btn');
 runBtn.addEventListener('click', function() {
     codes = editor.getValue();
     console.log(codes);
-    runFileOnContainer("a.py", codes);
+    fileName = "tester.py"
+    UploadFileToContainer(fileName, codes);
+    runFileOnContainer(fileName, containerID);
+    socket.send(`./${fileName}\n`);
 })

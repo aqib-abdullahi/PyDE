@@ -5,6 +5,9 @@ import docker
 import docker
 import os
 from dotenv import load_dotenv
+import tarfile
+import time
+from io import BytesIO
 
 
 load_dotenv()
@@ -48,12 +51,19 @@ class dockerSDK():
         """Uploads file to container"""
         containerID = self.get_container_by_id(container_id)
         work_dir = "/PyDE"
-        # print(containerID.exec_run("pwd").output.decode('utf-8'))
-        containerID.exec_run(f'touch {file_name}')
-        # filing = f'printf "{file_content}\n" > {file_name}'
-        # result = containerID.exec_run(filing)
-        result = containerID.put_archive(work_dir, data=file_content)
-        return(result.output.decode('utf-8'))
+
+        pw_tarstream = BytesIO()
+        pw_tar = tarfile.TarFile(fileobj=pw_tarstream, mode='w')
+        file_content += "\n"
+        file_data = file_content.encode('utf8')
+        tarinfo = tarfile.TarInfo(name=file_name)
+        tarinfo.size = len(file_data)
+        tarinfo.mtime = time.time()
+        pw_tar.addfile(tarinfo, BytesIO(file_data))
+        pw_tar.close()
+        pw_tarstream.seek(0)
+        result = containerID.put_archive(path=work_dir, data=pw_tarstream)
+        return result
     
     def download_file(self, container_id, file_name):
         """downloads file from container
@@ -68,5 +78,4 @@ class dockerSDK():
         containerID = self.get_container_by_id(container_id)
         permission = containerID.exec_run(f'chmod +x {file_name}')
         execute = containerID.exec_run(f'./{file_name}')
-        print(permission)
-        return execute
+        return(execute.output.decode('utf-8'))

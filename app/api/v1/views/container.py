@@ -24,3 +24,13 @@ def upload_file(user_id, container_id):
     if result is not None:
         return jsonify({"message": "file uploaded"}), 200
     return jsonify({"message": "failed to upload"}), 422
+
+@api_v1_container.route('/<user_id>/<container_id>/<file_name>', methods=['GET'], strict_slashes=False)
+def execute_file(user_id, container_id, file_name):
+    """eexecutes file inside container
+    """
+    result = dockerEngine.execute_file(container_id=container_id,
+                                       file_name=file_name)
+    if result is not None:
+        return jsonify({"message": result}), 200
+    return jsonify({"": ""}), 422
