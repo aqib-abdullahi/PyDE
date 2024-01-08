@@ -60,40 +60,7 @@
             </div>
 
             <ul class="treeRoot">
-                <li class="hasSubMenu"><span class="spanned">PyDE</span>
-                    <ul class="activeSubMenu">
-                        <li class="hasSubMenu"><span class="spanned">Branch1</span>
-                            <ul>
-                                <li><span class="spanned">Branch1-sub2</span></li>
-                                <li><span class="spanned">Branch1-sub3</span></li>
-                                <li><span class="spanned">Branch1-sub4</span></li>
-                                <li><span class="spanned">Branch1-sub5</span></li>
-                                <li><span class="spanned">Branch1-sub6</span></li>
-                            </ul>
-                        </li>
-                        <li><span class="spanned">Branch2</span></li>
-                        <li class="hasSubMenu"><span class="spanned">Branch3</span>
-                            <ul>
-                                <li><span class="spanned">Branch3-sub1</span></li>
-                                <li class="hasSubMenu"><span class="spanned">Branch3-sub2</span>
-                                    <ul>
-                                        <li><span class="spanned">Branch3-sub1</span></li>
-                                        <li><span class="spanned">Branch3-sub2</span></li>
-                                        <li><span class="spanned">Branch3-sub3</span></li>
-                                        <li><span class="spanned">Branch3-sub4</span></li>
-                                        <li><span class="spanned">Branch3-sub5</span></li>
-                                        <li><span class="spanned">Branch3-sub6</span></li>
-                                    </ul>
-                                </li>
-                                <li><span class="spanned">Branch3-sub3</span></li>
-                                <li><span class="spanned">Branch3-sub4</span></li>
-                                <li><span class="spanned">Branch3-sub5</span></li>
-                                <li><span class="spanned">Branch3-sub6</span></li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                </li>
+                {% from 'macros.html' import render_tree %} {{ render_tree(file_tree) }}
             </ul>
 
         </aside>

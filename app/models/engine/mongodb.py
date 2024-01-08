@@ -54,6 +54,11 @@ class MongoDBstorage:
         """
         collection = self.__db[collection_name]
         return collection.find(query)
+    
+    def count(self, collection_name):
+        """Counts the number of documents in a collection"""
+        collection = self.__db[collection_name]
+        return collection.count_documents({})
 
     def update_one(self, collection_name, query, new_values):
         """Updates the database with a single data

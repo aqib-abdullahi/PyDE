@@ -35,7 +35,7 @@ class User(Base, UserMixin):
         return True
 
     def get_id(self):
-        """Return the email address to satisfy Flask-Login's requirements."""
+        """Return the user id to satisfy Flask-Login's requirements."""
         return self.UserID
     
     def get(cls, id):

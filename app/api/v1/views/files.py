@@ -10,14 +10,13 @@ from datetime import datetime
 
 api_v1_users = Blueprint('api_v1_users', __name__)
 
-@api_v1_users.route('/<user_id>/files', methods=['GET'], strict_slashes=False)
-def get_files(user_id):
+@api_v1_users.route('/<user_id>/<_id>/files', methods=['GET'], strict_slashes=False)
+def get_files(user_id, _id):
     """Gets all files and folders for a particular
     user
     """
-    query = {'user_id': user_id}
+    query = {'_id': ObjectId(_id)}
     data =  list(mongodb_store.find("files", query))
-    print(data)
     for item in data:
         if '_id' in item:
             item['_id'] = str(item['_id'])
@@ -33,7 +32,7 @@ def create_file(user_id):
     folder_name = data.get('folder_name')
     file_contents = data.get('file_contents')
     children = data.get('children')
-    parent = data.get('parent_folder')
+    parent_folder_id = data.get('parent_folder_id')
     if not file_name and not folder_name:
         return jsonify({'message': 'File or folder name is required'}), 400
     
@@ -41,19 +40,36 @@ def create_file(user_id):
     data['updated_at'] = datetime.now()
     data['user_id'] = current_user.get_id()
     try:
-        inserted = mongodb_store.insert_one("files",
-                                            {
-                                                'user_id': user_id,
-                                                'file_name': file_name,
-                                                'file_contents': file_contents,
-                                                'folder_name': folder_name,
-                                                'parent_folder': parent,
-                                                'children': children,
-                                                'created_at': data['created_at'],
-                                                'updated_at': data['updated_at']
-                                            })
+        # inserted = mongodb_store.insert_one("files",
+        #                                     {
+        #                                         'user_id': user_id,
+        #                                         'file_name': file_name,
+        #                                         'file_contents': file_contents,
+        #                                         'folder_name': folder_name,
+        #                                         'parent_folder_id': parent_folder_id,
+        #                                         'children': children,
+        #                                         'created_at': data['created_at'],
+        #                                         'updated_at': data['updated_at']
+        #                                     })
+
+        file_data = {
+                'user_id': 15,
+                '_id': str(ObjectId()),
+                'file_name': file_name,
+                'file_contents': file_contents,
+                'folder_name': folder_name,
+                'parent_folder_id': parent_folder_id,
+                'children': children,
+                'created_at': data['created_at'],
+                'updated_at': data['updated_at']
+        }
+        updated = mongodb_store.update_one(
+                "files",
+                {"_id": ObjectId(parent_folder_id), "user_id": 15},
+                {"children": file_data}
+            )
         return jsonify({'message': 'File created successfully',
-                        'id': str(inserted.inserted_id)}), 201
+                        'id': file_data.get('_id')}), 200
     except Exception as e:
         return jsonify({"mesage": str(e)}), 500
 
