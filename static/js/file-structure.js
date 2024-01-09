@@ -8,6 +8,7 @@ const fileForm = document.querySelector('.fileForm');
 const popfoldersmoke = document.querySelector('.popfoldersmoke');
 const popfilesmoke = document.querySelector('.popfilesmoke');
 const userId = document.getElementById('userId').value;
+const spanId = document.querySelector('.spanned')
 let parentFolder;
 let usersfiles;
 
@@ -32,8 +33,6 @@ treeRootElements.forEach(function(element) {
         iconElement.classList.add(cls);
     });
 
-    element.parentNode.insertBefore(iconElement, element);
-
     if (iconClass === 'fa-regular fa-folder-open') {
         const originalIconClass = "fa-solid fa-file-circle-plus";
         // file icon class
@@ -46,21 +45,8 @@ treeRootElements.forEach(function(element) {
         // add folder class
         const Addfolderclass = "fa-solid fa-folder-plus";
         const seperatedFolderClass = Addfolderclass.split(' ')
-            // add foldeer element
-        const folderElement = document.createElement("i")
-        seperatedFolderClass.forEach(cls => {
-            folderElement.classList.add(cls);
-        });
-        // inserts file icon
+            // inserts file icon
         element.parentNode.insertBefore(iconelement, element.nextSibling);
-        // inserts folder icon
-        element.parentNode.insertBefore(folderElement, element.nextSibling);
-        folderElement.addEventListener('click', function() {
-            popupfile.style.display = 'none';
-            popupfolder.style.display = 'grid';
-            popfoldersmoke.style.display = 'block';
-            parentFolder = this.parentElement.innerText
-        })
         iconelement.addEventListener('click', function() {
             popupfolder.style.display = 'none';
             popupfile.style.display = 'grid';
@@ -124,9 +110,15 @@ fileForm.addEventListener("submit", function(event) {
     popfilesmoke.style.display = 'none'
     const fileNameInput = document.getElementById('fileNameInput');
     const fileName = fileNameInput.value;
+    spid = spanId.id
+    pid = `${spid}`
     const fileInfo = {
+        "user_id": userId,
         "file_name": fileName,
-        "parent_folder": parentFolder
+        "parent_folder_id": pid,
+        "file_contents": null,
+        "folder_name": null,
+        children: []
     }
 
     fetch(`/api/v1/users/${userId}/files`, {
@@ -148,87 +140,4 @@ fileForm.addEventListener("submit", function(event) {
         .catch(error => {
             console.error('Problem uploading file: ', error);
         })
-    getUserFiles(userId).then(files => {
-            usersfiles = files;
-            const filesData = usersfiles;
-
-            for (let i = 0; i < filesData.files.length; i++) {
-                const file = filesData.files[i];
-                if (file.file_name) {
-                    console.log(`File name ${i + 1}: ${file.file_name}`);
-                    console.log(`File id ${i + 1}: ${file._id}`);
-                    console.log(`Parent folder name ${i + 1}: ${file.parent_folder}`);
-                }
-                if (file.folder_name) {
-                    console.log(`Folder name ${i + 1}: ${file.folder_name}`);
-                    console.log(`Folder id ${i + 1}: ${file._id}`);
-                    console.log(`Parent folder name ${i + 1}: ${file.parent_folder}`);
-                }
-
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching user files:', error);
-        });
-
-
-
-})
-
-// SAVE FOLDER
-folderForm.addEventListener("submit", function(event) {
-    event.preventDefault();
-    popupfile.style.display = 'none';
-    popupfolder.style.display = 'none';
-    popfoldersmoke.style.display = 'none';
-    popfilesmoke.style.display = 'none'
-    const folderNameInput = document.getElementById('folderNameInput');
-    const folderName = folderNameInput.value;
-    const folderInfo = {
-        "folder_name": folderName,
-        "parent_folder": parentFolder,
-        "children": null
-    }
-
-    fetch(`/api/v1/users/${userId}/files`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(folderInfo)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Folder uploaded successsfully: ', data);
-        })
-        .catch(error => {
-            console.error('Problem uploading folder: ', error);
-        })
-    getUserFiles(userId).then(files => {
-            usersfiles = files;
-            const filesData = usersfiles;
-
-            for (let i = 0; i < filesData.files.length; i++) {
-                const file = filesData.files[i];
-                if (file.file_name) {
-                    console.log(`File name ${i + 1}: ${file.file_name}`);
-                    console.log(`File id ${i + 1}: ${file._id}`);
-                    console.log(`Parent folder name ${i + 1}: ${file.parent_folder}`)
-                }
-                if (file.folder_name) {
-                    console.log(`Folder name ${i + 1}: ${file.folder_name}`);
-                    console.log(`Folder id ${i + 1}: ${file._id}`);
-                    console.log(`Parent folder name ${i + 1}: ${file.parent_folder}`);
-                }
-
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching user files:', error);
-        });
 })

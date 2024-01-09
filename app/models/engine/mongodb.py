@@ -59,7 +59,6 @@ class MongoDBstorage:
         """Replaces a single document in the collection"""
         collection = self.__db[collection_name]
         return collection.replace_one(query, new_values)
-        # return collection.update_one(query, {"$push": new_values})
     
     def count(self, collection_name):
         """Counts the number of documents in a collection"""
@@ -70,7 +69,7 @@ class MongoDBstorage:
         """Updates the database with a single data
         """
         collection = self.__db[collection_name]
-        return collection.update_one(query, {"$set": new_values})
+        return collection.update_one(query, {"$push": new_values})
     
     def update_many(self, collection_name, query, new_values):
         """Updates the database with multiple data

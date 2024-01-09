@@ -6,6 +6,8 @@ from flask import Flask, render_template, Blueprint, redirect, url_for
 from flask_login import login_required, current_user, login_user
 from dotenv import load_dotenv
 import os
+import json
+import requests
 from app.models.user import User
 from app.models import mongodb_store
 from app.auth.auth import authDB
@@ -14,39 +16,6 @@ from app.auth.auth import authDB
 main = Blueprint('main', __name__)
 load_dotenv()
 
-file_tree = {
-    "name": "PyDE",
-    "children": [
-        {
-            "name": "Branch1",
-            "children": [
-                {"name": "Branch1-sub2"},
-                {"name": "Branch1-sub3"},
-                {"name": "Branch1-sub4"},
-                {"name": "Branch1-sub5"},
-                {"name": "Branch1-sub6"}
-            ]
-        },
-        {
-            "name": "Branch2"
-        },
-        {
-            "name": "Branch3",
-            "children": [
-                {"name": "Branch3-sub1"},
-                {"name": "Branch3-sub2"},
-                {"name": "Branch3-sub3"},
-                {"name": "Branch3-sub4"},
-                {"name": "Branch3-sub5"},
-                {
-                    "name": "Branch3-sub6",
-                    "children": [
-                        {"name": "pistol"}
-                    ]}
-            ]
-        }
-    ]
-}
 
 def initialize_file_tree(user_id):
     """Initializes a database for the user with the user id"""
@@ -55,7 +24,7 @@ def initialize_file_tree(user_id):
         "type": "folder",
         "parent_folder": None,
         "user_id": user_id,
-        "children": []
+        "children": [],
     }
     finder = mongodb_store.find("files", {"name": "PyDE", "type": "folder", "user_id": user_id})
     result = list(finder)
@@ -68,6 +37,8 @@ def initialize_file_tree(user_id):
 def index():
     """Main page
     """
+    response = requests.get(f"http://127.0.0.1:5000/api/v1/users/{current_user.get_id()}/files")
+    file_tree = response.json()
     ip_address = os.getenv('IP_ADDRESS')
     container_id = current_user.Container
     container_port = os.getenv('CONTAINER_PORT')

@@ -21,8 +21,8 @@ def get_files(user_id):
     for item in data:
         if '_id' in item:
             item['_id'] = str(item['_id'])
-
-    return jsonify({'files': data})
+    response_data = next((item for item in data if item.get('name') == 'PyDE'), None)
+    return jsonify(response_data)
 
 @api_v1_users.route('/<user_id>/files', methods=['POST'], strict_slashes=False)
 def create_file(user_id):
@@ -32,19 +32,17 @@ def create_file(user_id):
     file_name = data.get('file_name')
     folder_name = data.get('folder_name')
     file_contents = data.get('file_contents')
-    # children = data.get('children')
     parent_folder_id = data.get('parent_folder_id')
     if not file_name and not folder_name:
         return jsonify({'message': 'File or folder name is required'}), 400
     
     data['created_at'] = datetime.now()
     data['updated_at'] = datetime.now()
-    data['user_id'] = current_user.get_id()
     try:
         file_data = {
                 'user_id': user_id,
                 '_id': str(ObjectId()),
-                'file_name': file_name,
+                'name': file_name,
                 'file_contents': file_contents,
                 'folder_name': folder_name,
                 'parent_folder_id': parent_folder_id,

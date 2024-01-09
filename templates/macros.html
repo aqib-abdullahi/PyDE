@@ -1,8 +1,10 @@
 {% macro render_tree(node) %}
 <li class="{% if node.get('children') %} hasSubMenu {% endif %}">
-    <span class="spanned">{{ node['name'] }}</span> {% if node.get('children') %}
+    <span class="spanned" id="{{ node['_id'] }}">{{ node['name'] }}</span> {% if node.get('children') %}
     <ul class="activeSubMenu">
-        {% for child in node['children'] %} {{ render_tree(child) }} {% endfor %}
+        {% for child in node['children'] %}
+        <li>{{ render_tree(child) }}</li>
+        {% endfor %}
     </ul>
     {% endif %}
 </li>
