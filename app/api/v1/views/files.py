@@ -42,7 +42,7 @@ def create_file(user_id):
     data['user_id'] = current_user.get_id()
     try:
         file_data = {
-                'user_id': 15,
+                'user_id': user_id,
                 '_id': str(ObjectId()),
                 'file_name': file_name,
                 'file_contents': file_contents,
@@ -66,7 +66,7 @@ def create_file(user_id):
 def delete_file(user_id, file_id):
     """deletes a file for a particular user
     using the file id"""
-    query = {'user_id': user_id, '_id': ObjectId(file_id)}
+    query = {'children.user_id': user_id, 'children._id': file_id}
     try:
         mongodb_store.delete_one("files", query)
         return jsonify({'message': 'File deleted successfully', 'file': file_id}), 200
@@ -78,12 +78,17 @@ def update_file(user_id, file_id):
     """Updates the content of a file owned by a
     specific user
     """
-    query = {'user_id': user_id, '_id': ObjectId(file_id)}
     data = request.json
+    parent_folder_id = data.get('parent_folder_id')
     file_contents = data.get('file_contents')
-    updates = {'file_contents': file_contents, 'updated_at': datetime.now()}
-    try:
-        mongodb_store.update_one("files", query, updates)
+
+    updated = mongodb_store.update_one("files",
+                            {"children._id": file_id},
+                            {"children.file_contents": file_contents,
+                             "children.updated_at": datetime.now()}
+              )
+    print(updated.modified_count)
+    if updated.modified_count:
         return jsonify({'message': 'File updated successfully', 'file': file_id}), 200
-    except Exception as e:
-        return jsonify({'message': str(e)}), 404
+
+    return jsonify({'message': "failed to update file"}), 404
