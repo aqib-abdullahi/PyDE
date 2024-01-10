@@ -1,5 +1,8 @@
+import { editor } from "./IDE.js";
+
 const treeRootElements = document.querySelectorAll("ul.treeRoot li span");
 const cancelfolder = document.getElementById('cancelfolder-btn');
+const spans = document.querySelectorAll('.spanned')
 const cancelfile = document.getElementById('cancelfile-btn');
 const popupfile = document.querySelector('.popfile');
 const popupfolder = document.querySelector('.popfolder');
@@ -10,8 +13,42 @@ const popfilesmoke = document.querySelector('.popfilesmoke');
 const userId = document.getElementById('userId').value;
 const spanId = document.querySelector('.spanned')
 const tree = document.querySelector('.treeRoot')
+const fileSpace = document.querySelector('.filename')
 let parentFolder;
 let usersfiles;
+
+spans.forEach(function(element) {
+    element.addEventListener('click', function() {
+        console.log(element.id)
+        fetch(`/api/v1/users/${userId}/files/${element.id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Files loaded successsfully: ', data);
+                console.log(data)
+                const Filename = String(data.name)
+                console.log(Filename)
+                fileSpace.innerText = `file name: ${data.name}`
+                fileSpace.value = data._id
+                console.log(data.file_contents)
+                editor.setValue(`${data.file_contents}`);
+            })
+            .catch(error => {
+                console.error('Problem loading files: ', error);
+                throw error;
+            })
+
+    })
+})
 
 // Function to update the file tree
 function updateFileTree(userId) {
@@ -133,8 +170,8 @@ fileForm.addEventListener("submit", function(event) {
     popfilesmoke.style.display = 'none'
     const fileNameInput = document.getElementById('fileNameInput');
     const fileName = fileNameInput.value;
-    spid = spanId.id
-    pid = `${spid}`
+    const spid = spanId.id
+    const pid = `${spid}`
     const fileInfo = {
         "user_id": userId,
         "file_name": fileName,

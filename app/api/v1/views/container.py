@@ -14,11 +14,11 @@ api_v1_container = Blueprint("api_v1_container", __name__)
 def upload_file(user_id, container_id):
     """uploads file to container as executable"""
     data = request.json
-    file_content = data.get('file_content')
-    file_name = data.get('file_name')
+    file_contents = data.get('file_contents')
+    file_name = data.get('name')
 
     result = dockerEngine.upload_file(container_id=container_id,
-                                      file_content=file_content,
+                                      file_content=file_contents,
                                       file_name=file_name)
     print(result)
     if result is not None:

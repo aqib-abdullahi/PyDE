@@ -54,16 +54,31 @@ class dockerSDK():
 
         pw_tarstream = BytesIO()
         pw_tar = tarfile.TarFile(fileobj=pw_tarstream, mode='w')
-        file_content += "\n"
-        file_data = file_content.encode('utf8')
-        tarinfo = tarfile.TarInfo(name=file_name)
-        tarinfo.size = len(file_data)
-        tarinfo.mtime = time.time()
-        pw_tar.addfile(tarinfo, BytesIO(file_data))
-        pw_tar.close()
-        pw_tarstream.seek(0)
-        result = containerID.put_archive(path=work_dir, data=pw_tarstream)
-        return result
+        # if file_content is None:
+            
+        if file_content is not None:
+            file_content += "\n"
+            file_data = file_content.encode('utf8')
+            tarinfo = tarfile.TarInfo(name=file_name)
+            tarinfo.size = len(file_data)
+            tarinfo.mtime = time.time()
+            pw_tar.addfile(tarinfo, BytesIO(file_data))
+            pw_tar.close()
+            pw_tarstream.seek(0)
+            result = containerID.put_archive(path=work_dir, data=pw_tarstream)
+            return result
+        else:
+            file_content = "\n"
+            file_data = file_content.encode('utf8')
+            tarinfo = tarfile.TarInfo(name=file_name)
+            tarinfo.size = len(file_data)
+            tarinfo.mtime = time.time()
+            pw_tar.addfile(tarinfo, BytesIO(file_data))
+            pw_tar.close()
+            pw_tarstream.seek(0)
+            result = containerID.put_archive(path=work_dir, data=pw_tarstream)
+            return result
+
     
     def download_file(self, container_id, file_name):
         """downloads file from container
@@ -76,6 +91,6 @@ class dockerSDK():
         """executes the file within container
         """
         containerID = self.get_container_by_id(container_id)
-        permission = containerID.exec_run(f'chmod +x {file_name}')
+        permission = containerID.exec_run(f'chmod 755 {file_name}')
         execute = containerID.exec_run(f'./{file_name}')
         return(execute.output.decode('utf-8'))

@@ -32,6 +32,20 @@ def get_files(user_id):
     response_data = next((item for item in data if item.get('name') == 'PyDE'), None)
     return jsonify(response_data)
 
+@api_v1_users.route('/<user_id>/files/<file_id>', methods=['GET'], strict_slashes=False)
+def get_file(user_id, file_id):
+    """gets a file based on its id"""
+    usersid = int(user_id)
+    query = {"user_id": usersid}
+    files = list(mongodb_store.find("files", query))
+    for file in files:
+        children = file.get('children', [])
+        for child in children:
+            if child['_id'] == file_id:
+                return jsonify(child)
+
+    return jsonify({"message": "'mll' file not found"}), 404
+
 @api_v1_users.route('/<user_id>/files', methods=['POST'], strict_slashes=False)
 def create_file(user_id):
     """creates a file for a particular user
@@ -72,7 +86,8 @@ def create_file(user_id):
 def delete_file(user_id, file_id):
     """deletes a file for a particular user
     using the file id"""
-    query = {'children.user_id': user_id, 'children._id': file_id}
+    usersid = int(user_id)
+    query = {'user_id': usersid}
     try:
         mongodb_store.delete_one("files", query)
         return jsonify({'message': 'File deleted successfully', 'file': file_id}), 200
@@ -81,20 +96,19 @@ def delete_file(user_id, file_id):
 
 @api_v1_users.route('/<user_id>/files/<file_id>', methods=['PUT'], strict_slashes=False)
 def update_file(user_id, file_id):
-    """Updates the content of a file owned by a
-    specific user
-    """
+    """Updates the content of a file owned by a specific user"""
     data = request.json
-    parent_folder_id = data.get('parent_folder_id')
     file_contents = data.get('file_contents')
+    query = {"user_id": int(user_id), "children._id": file_id}
+    update_data = {
+        "children.$.file_contents": file_contents,
+        "children.$.updated_at": datetime.now()
+    }
 
-    updated = mongodb_store.update_one("files",
-                            {"children._id": file_id},
-                            {"children.file_contents": file_contents,
-                             "children.updated_at": datetime.now()}
-              )
-    print(updated.modified_count)
-    if updated.modified_count:
-        return jsonify({'message': 'File updated successfully', 'file': file_id}), 200
+    updated = mongodb_store.update_one_set("files", query, update_data)
 
-    return jsonify({'message': "failed to update file"}), 404
+    if updated.modified_count > 0:
+        updated_document = mongodb_store.find("files", query)
+        return jsonify({"message": "file updated successfully"}), 200
+
+    return jsonify({'message': 'Failed to update file'}), 404

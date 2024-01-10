@@ -35,23 +35,14 @@ profiler.addEventListener('click', function() {
     dropDown.classList.toggle('block')
 });
 
-// function uploads file to container
-function uploadFileToContainer(filename, fileContent) {
-    const message = `echo "${fileContent}" > ${filename} \n`
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.send(message);
-    } else {
-        socket.addEventListener('open', function() {
-            socket.send(message);
-        });
-    }
-}
+const userId = document.getElementById('userId').value;
 
-function UploadFileToContainer(filename, fileContent) {
+function uploadFileToContainer(filename, fileContent) {
     const fileInfo = {
-        "file_content": fileContent,
-        "file_name": filename
+        "file_contents": fileContent,
+        "name": filename
     }
+    console.log(userId)
     return fetch(`/api/v1/container/${userId}/${containerID}`, {
             method: 'POST',
             headers: {
@@ -71,6 +62,35 @@ function UploadFileToContainer(filename, fileContent) {
         })
         .catch(error => {
             console.error('Problem uploading file: ', error);
+            throw error;
+        })
+
+}
+
+function updateContainerFile(fileId, fileContent) {
+    const fileInfo = {
+        "file_contents": fileContent
+    }
+    console.log(userId)
+    return fetch(`/api/v1/users/${userId}/files/${fileId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(fileInfo)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('File updated successsfully: ', data);
+            return data;
+        })
+        .catch(error => {
+            console.error('Problem updating file: ', error);
             throw error;
         })
 
@@ -104,10 +124,22 @@ function runFileOnContainer(filename, containerID) {
 // exports code
 const runBtn = document.querySelector('.run-btn');
 runBtn.addEventListener('click', function() {
-    codes = editor.getValue();
+    console.log(editor.state.doc)
+    let codes = editor.getValue();
     console.log(codes);
-    fileName = "tester.py"
-    UploadFileToContainer(fileName, codes);
+    let fileName = fileNameSave.textContent.split(': ')[1];
+    uploadFileToContainer(fileName, codes);
     runFileOnContainer(fileName, containerID);
     socket.send(`./${fileName}\n`);
 })
+
+const fileNameSave = document.querySelector('.filename')
+const saveBtn = document.querySelector('.save-btn');
+saveBtn.addEventListener('click', function() {
+    let codes = editor.getValue();
+    console.log(codes);
+    let fileName = fileNameSave.textContent.split(': ')[1];
+    updateContainerFile(fileNameSave.value, codes)
+})
+
+export { editor }

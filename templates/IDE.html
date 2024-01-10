@@ -23,8 +23,14 @@
 
 <body>
     <div class="header">
+        <div class="file">
+            <span class="filename"></span>
+        </div>
         <div class="run-btn">
             <button type="button">RUN</button>
+        </div>
+        <div class="save-btn">
+            <button type="button">SAVE</button>
         </div>
         <div class="user-icon">
             <i class="fa-regular fa-user" id="user-icon"></i>
@@ -90,8 +96,8 @@
 <script src="{{ url_for('static', filename='js/show-hint.js') }}"></script>
 <script src="{{ url_for('static', filename='js/python-hint.js') }}"></script>
 <script src="{{ url_for('static', filename='js/simple-hint.js') }}"></script>
-<script src="{{ url_for('static', filename='js/IDE.js') }}"></script>
-<script src="{{ url_for('static', filename='js/file-structure.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/IDE.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/file-structure.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
 <script src="{{ url_for('static', filename='js/terminal.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>

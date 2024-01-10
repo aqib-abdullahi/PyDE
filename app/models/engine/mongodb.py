@@ -71,6 +71,12 @@ class MongoDBstorage:
         collection = self.__db[collection_name]
         return collection.update_one(query, {"$push": new_values})
     
+    def update_one_set(self, collection_name, query, new_values):
+        """Updates the database with a single data
+        """
+        collection = self.__db[collection_name]
+        return collection.update_one(query, {"$set": new_values})
+
     def update_many(self, collection_name, query, new_values):
         """Updates the database with multiple data
         """

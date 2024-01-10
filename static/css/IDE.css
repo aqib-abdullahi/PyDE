@@ -56,9 +56,31 @@ body {
     background-color: rgb(24, 196, 98);
 }
 
+.save-btn button {
+    margin: 0;
+    font-family: sans-serif;
+    height: 2rem;
+    width: 3rem;
+    margin: 0 auto;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    color: #F5F5F5;
+    background-color: rgb(24, 196, 98);
+}
+
 .run-btn {
     position: relative;
     top: .25rem;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.save-btn {
+    position: relative;
+    top: .25rem;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .editor {
@@ -110,6 +132,11 @@ li {
 
 .spanned {
     padding-left: 5px;
+}
+
+.spanned:active {
+    text-decoration: underline;
+    color: #000;
 }
 
 .spanned:hover {
@@ -339,4 +366,16 @@ i {
 
 #cancelfile-btn:hover {
     cursor: pointer;
+}
+
+.file {
+    /* width: 50px;
+    height: 50px; */
+    display: grid;
+    place-items: center;
+    margin-right: 50px;
+    float: left;
+    font-size: 1rem;
+    color: #F5F5F5;
+    font-family: 'Ubuntu Mono';
 }
