@@ -55,3 +55,11 @@ def index():
     else:
         from app.auth.auth import auth
         return redirect(url_for('auth.login'))
+    
+# @login_required
+@main.route('/file-tree', methods=['GET'], strict_slashes=False)
+def file_tree_process():
+    """renders the file_tree html"""
+    response = requests.get(f"http://127.0.0.1:5000/api/v1/users/{current_user.get_id()}/files")
+    file_tree = response.json()
+    return render_template('macros.html', file_tree=file_tree)

@@ -2,13 +2,21 @@
 """Database file tree storage
 """
 from flask import jsonify
-from flask import Blueprint, request
+from flask import Blueprint, request, render_template
 from app.models import mongodb_store
 from bson.objectid import ObjectId
 from flask_login import current_user
 from datetime import datetime
+import requests
 
 api_v1_users = Blueprint('api_v1_users', __name__)
+
+@api_v1_users.route('/<user_id>/file-tree', methods=['GET'], strict_slashes=False)
+def file_tree_process(user_id):
+    """renders the file_tree html"""
+    response = requests.get(f"http://127.0.0.1:5000/api/v1/users/{user_id}/files")
+    file_tree = response.json()
+    return render_template('macros.html', file_tree=file_tree)
 
 @api_v1_users.route('/<user_id>/files', methods=['GET'], strict_slashes=False)
 def get_files(user_id):
