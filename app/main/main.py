@@ -37,8 +37,6 @@ def initialize_file_tree(user_id):
 def index():
     """Main page
     """
-    response = requests.get(f"http://127.0.0.1:5000/api/v1/users/{current_user.get_id()}/files")
-    file_tree = response.json()
     ip_address = os.getenv('IP_ADDRESS')
     container_id = current_user.Container
     container_port = os.getenv('CONTAINER_PORT')
@@ -46,6 +44,8 @@ def index():
     if current_user.is_authenticated:
         id = current_user.get_id()
         initialize_file_tree(id)
+        response = requests.get(f"http://127.0.0.1:5000/api/v1/users/{current_user.get_id()}/files")
+        file_tree = response.json()
         return render_template('IDE.html',
                             ip_address=ip_address,
                             user_id = user_id,
