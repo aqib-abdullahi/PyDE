@@ -91,6 +91,7 @@ def login():
             }
             return render_template('login.html', form_data=form_data)
 
+@login_required
 @auth.route('/Logout', methods=['GET', 'POST'], strict_slashes=False)
 def logout():
     """Logs out the user from the session
