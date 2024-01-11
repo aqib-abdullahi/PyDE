@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """authentication module
 """
+import uuid
 from flask import Blueprint, request, render_template, redirect, url_for
 from passlib.hash import bcrypt_sha256
 from app.models import storage, dockerEngine
@@ -23,7 +24,7 @@ def Signup():
         LastName = request.form['Last name']
         Email = request.form['Email']
         Password = request.form['Password']
-        Container = str(FirstName)
+        Container = str(uuid.uuid4())
         Repeat_password = request.form['Confirm password']
 
         authenticateDB = authDB()

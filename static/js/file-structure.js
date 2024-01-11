@@ -52,7 +52,12 @@ spans.forEach(function(element) {
 
 // Function to update the file tree
 function updateFileTree(userId) {
-    fetch(`/api/v1/users/${userId}/file-tree`)
+    fetch(`/api/v1/users/${userId}/file-tree`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -60,7 +65,7 @@ function updateFileTree(userId) {
             return response.text();
         })
         .then(html => {
-            tree.innerHTML = "";
+            // tree.innerHTML = "";
             tree.innerHTML = html;
             console.log(html)
             alert('Reload page in order to add another file')
@@ -171,14 +176,12 @@ fileForm.addEventListener("submit", function(event) {
     const fileNameInput = document.getElementById('fileNameInput');
     const fileName = fileNameInput.value;
     const spid = spanId.id
-    const pid = `${spid}`
+        // const pid = `${spid}`
     const fileInfo = {
-        "user_id": userId,
-        "file_name": fileName,
-        "parent_folder_id": pid,
-        "file_contents": null,
-        "folder_name": null,
-        children: []
+        "name": fileName,
+        "parent_folder_id": spid,
+        "file_contents": "",
+        "children": []
     }
 
     fetch(`/api/v1/users/${userId}/files`, {

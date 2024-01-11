@@ -51,12 +51,12 @@ def create_file(user_id):
     """creates a file for a particular user
     """
     data = request.json
-    file_name = data.get('file_name')
-    folder_name = data.get('folder_name')
+    name = data.get('name')
+    # folder_name = data.get('folder_name')
     file_contents = data.get('file_contents')
     parent_folder_id = data.get('parent_folder_id')
-    if not file_name and not folder_name:
-        return jsonify({'message': 'File or folder name is required'}), 400
+    if not name:
+        return jsonify({'message': 'File name is required'}), 400
     
     data['created_at'] = datetime.now()
     data['updated_at'] = datetime.now()
@@ -64,9 +64,9 @@ def create_file(user_id):
         file_data = {
                 'user_id': user_id,
                 '_id': str(ObjectId()),
-                'name': file_name,
+                'name': name,
                 'file_contents': file_contents,
-                'folder_name': folder_name,
+                # 'folder_name': '',
                 'parent_folder_id': parent_folder_id,
                 'children': [],
                 'created_at': data['created_at'],
@@ -74,13 +74,14 @@ def create_file(user_id):
         }
         updated = mongodb_store.update_one(
                 "files",
-                {"_id": ObjectId(parent_folder_id), "user_id": 15},
+                {"_id": ObjectId(parent_folder_id), "user_id": int(user_id)},
                 {"children": file_data}
             )
+        print(updated.modified_count)
         return jsonify({'message': 'File created successfully',
                         'id': file_data.get('_id')}), 200
     except Exception as e:
-        return jsonify({"mesage": str(e)}), 500
+        return jsonify({"message": str(e)}), 500
 
 @api_v1_users.route('/<user_id>/files/<file_id>', methods=['DELETE'], strict_slashes=False)
 def delete_file(user_id, file_id):
