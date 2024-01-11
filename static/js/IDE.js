@@ -1,4 +1,6 @@
 const containerID = document.getElementById('containerId').value;
+let fileName;
+const fileNameSave = document.querySelector('.filename')
 
 var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
     theme: 'monokai',
@@ -67,7 +69,8 @@ function uploadFileToContainer(filename, fileContent) {
 
 }
 
-function updateContainerFile(fileId, fileContent) {
+
+function uploadContainerFile(fileId, fileContent) {
     const fileInfo = {
         "file_contents": fileContent
     }
@@ -120,7 +123,6 @@ function runFileOnContainer(filename, containerID) {
 
 }
 
-
 // exports code
 const runBtn = document.querySelector('.run-btn');
 runBtn.addEventListener('click', function() {
@@ -133,13 +135,15 @@ runBtn.addEventListener('click', function() {
     socket.send(`./${fileName}\n`);
 })
 
-const fileNameSave = document.querySelector('.filename')
+
 const saveBtn = document.querySelector('.save-btn');
 saveBtn.addEventListener('click', function() {
     let codes = editor.getValue();
     console.log(codes);
-    let fileName = fileNameSave.textContent.split(': ')[1];
-    updateContainerFile(fileNameSave.value, codes)
+    fileName = fileNameSave.textContent.split(': ')[1];
+    console.log(fileNameSave.value)
+    uploadContainerFile(fileNameSave.value, codes)
+    uploadFileToContainer(fileName, codes)
 })
 
 export { editor }

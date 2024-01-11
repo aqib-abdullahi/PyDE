@@ -34,3 +34,17 @@ def execute_file(user_id, container_id, file_name):
     if result is not None:
         return jsonify({"message": result}), 200
     return jsonify({"": ""}), 422
+
+@api_v1_container.route('/<user_id>/<container_id>/<file_id>/<file_name>', methods=['PUT'], strict_slashes=False)
+def update_file(user_id, container_id, file_id, file_name):
+    """updates file already in container as executable"""
+    data = request.json
+    file_contents = data.get('file_contents')
+
+    result = dockerEngine.upload_file(container_id=container_id,
+                                      file_content=file_contents,
+                                      file_name=file_name)
+    print(result)
+    if result is not None:
+        return jsonify({"message": "file uploaded"}), 200
+    return jsonify({"message": "failed to upload"}), 422
