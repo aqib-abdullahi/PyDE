@@ -6,8 +6,6 @@ import os
 from dotenv import load_dotenv
 from app.models.base import Base
 from app.models.user import User
-# from models.base import Base
-# from models.user import User
 
 
 load_dotenv()

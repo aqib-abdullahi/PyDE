@@ -52,7 +52,6 @@ def create_file(user_id):
     """
     data = request.json
     name = data.get('name')
-    # folder_name = data.get('folder_name')
     file_contents = data.get('file_contents')
     parent_folder_id = data.get('parent_folder_id')
     if not name:
@@ -66,7 +65,6 @@ def create_file(user_id):
                 '_id': str(ObjectId()),
                 'name': name,
                 'file_contents': file_contents,
-                # 'folder_name': '',
                 'parent_folder_id': parent_folder_id,
                 'children': [],
                 'created_at': data['created_at'],

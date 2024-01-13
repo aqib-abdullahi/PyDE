@@ -19,7 +19,6 @@ let usersfiles;
 
 spans.forEach(function(element) {
     element.addEventListener('click', function() {
-        console.log(element.id)
         fetch(`/api/v1/users/${userId}/files/${element.id}`, {
                 method: 'GET',
                 headers: {
@@ -33,13 +32,9 @@ spans.forEach(function(element) {
                 return response.json();
             })
             .then(data => {
-                console.log('Files loaded successsfully: ', data);
-                console.log(data)
                 const Filename = String(data.name)
-                console.log(Filename)
                 fileSpace.innerText = `file name: ${data.name}`
                 fileSpace.value = data._id
-                console.log(data.file_contents)
                 editor.setValue(`${data.file_contents}`);
             })
             .catch(error => {
@@ -67,7 +62,6 @@ function updateFileTree(userId) {
         .then(html => {
             // tree.innerHTML = "";
             tree.innerHTML = html;
-            console.log(html)
             alert('Reload page in order to add another file')
         })
         .catch(error => {
@@ -155,7 +149,6 @@ const getUserFiles = (userId) => {
             return response.json();
         })
         .then(data => {
-            console.log('Files loaded successsfully: ', data);
             return data;
         })
         .catch(error => {
@@ -197,9 +190,7 @@ fileForm.addEventListener("submit", function(event) {
             }
             return response.json();
         })
-        .then(data => {
-            console.log('File uploaded successsfully: ', data);
-        })
+        .then(data => {})
         .catch(error => {
             console.error('Problem uploading file: ', error);
         })

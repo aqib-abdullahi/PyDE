@@ -56,7 +56,6 @@ def index():
         from app.auth.auth import auth
         return redirect(url_for('auth.login'))
     
-# @login_required
 @main.route('/file-tree', methods=['GET'], strict_slashes=False)
 def file_tree_process():
     """renders the file_tree html"""

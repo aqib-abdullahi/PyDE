@@ -44,7 +44,6 @@ function uploadFileToContainer(filename, fileContent) {
         "file_contents": fileContent,
         "name": filename
     }
-    console.log(userId)
     return fetch(`/api/v1/container/${userId}/${containerID}`, {
             method: 'POST',
             headers: {
@@ -59,7 +58,6 @@ function uploadFileToContainer(filename, fileContent) {
             return response.json();
         })
         .then(data => {
-            console.log('File uploaded successsfully: ', data);
             return data;
         })
         .catch(error => {
@@ -89,7 +87,6 @@ function uploadContainerFile(fileId, fileContent) {
             return response.json();
         })
         .then(data => {
-            console.log('File updated successsfully: ', data);
             return data;
         })
         .catch(error => {
@@ -113,7 +110,6 @@ function runFileOnContainer(filename, containerID) {
             return response.json();
         })
         .then(data => {
-            console.log('File executed successsfully: ', data);
             return data;
         })
         .catch(error => {
@@ -126,9 +122,7 @@ function runFileOnContainer(filename, containerID) {
 // exports code
 const runBtn = document.querySelector('.run-btn');
 runBtn.addEventListener('click', function() {
-    console.log(editor.state.doc)
     let codes = editor.getValue();
-    console.log(codes);
     let fileName = fileNameSave.textContent.split(': ')[1];
     uploadFileToContainer(fileName, codes);
     runFileOnContainer(fileName, containerID);
@@ -139,9 +133,7 @@ runBtn.addEventListener('click', function() {
 const saveBtn = document.querySelector('.save-btn');
 saveBtn.addEventListener('click', function() {
     let codes = editor.getValue();
-    console.log(codes);
     fileName = fileNameSave.textContent.split(': ')[1];
-    console.log(fileNameSave.value)
     uploadContainerFile(fileNameSave.value, codes)
     uploadFileToContainer(fileName, codes)
 })

@@ -41,21 +41,14 @@ class dockerSDK():
                                                 detach=True)
         # PATH CONFIG
         symlink = container_id.exec_run("ln -s /usr/bin/python3 /usr/bin/python")
-        print(symlink.output.decode('utf-8'))
-
-        print(container_id.exec_run("python --version").output.decode('utf-8'))
-
         return container_id
     
     def upload_file(self, container_id, file_content, file_name):
         """Uploads file to container"""
         containerID = self.get_container_by_id(container_id)
         work_dir = "/PyDE"
-
         pw_tarstream = BytesIO()
         pw_tar = tarfile.TarFile(fileobj=pw_tarstream, mode='w')
-        # if file_content is None:
-            
         if file_content is not None:
             file_content += "\n"
             file_data = file_content.encode('utf8')
