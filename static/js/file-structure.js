@@ -60,7 +60,6 @@ function updateFileTree(userId) {
             return response.text();
         })
         .then(html => {
-            // tree.innerHTML = "";
             tree.innerHTML = html;
             alert('Reload page in order to add another file')
         })
@@ -169,7 +168,6 @@ fileForm.addEventListener("submit", function(event) {
     const fileNameInput = document.getElementById('fileNameInput');
     const fileName = fileNameInput.value;
     const spid = spanId.id
-        // const pid = `${spid}`
     const fileInfo = {
         "name": fileName,
         "parent_folder_id": spid,

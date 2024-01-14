@@ -67,6 +67,10 @@ PyDE is a web-based integrated development environment (IDE) tailored for Python
     DB_NAME=""
     DB_PASS=""
 
+    USE BELOW SQL COMMAND TO INSTANTIATE DATABASE AND USE  
+    CREATE DATABASE PyDE;
+    USE PyDE;
+
     CONTAINER CONFIGURATION
     IP_ADDRESS=""
     CONTAINER_ID=""
@@ -76,4 +80,4 @@ PyDE is a web-based integrated development environment (IDE) tailored for Python
     MONGODB_HOST=""
     MONGODB_PORT=""
     MONGODB_NAME=""
-    DOCUMENT NAME IN DB SHOULD BE "FILES"
+    COLLECTION NAME IN DB SHOULD BE "FILES"
