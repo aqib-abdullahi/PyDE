@@ -77,7 +77,7 @@ def login():
                 storage.save()
                 login_user(user, remember=False)
                 from app.main.main import main
-                return redirect(url_for('main.index'))
+                return redirect(url_for('main.IDE'))
             except Exception as e:
                 print(e)
                 session.rollback()

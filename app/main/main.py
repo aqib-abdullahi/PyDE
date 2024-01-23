@@ -32,10 +32,16 @@ def initialize_file_tree(user_id):
         inserted = mongodb_store.insert_one("files", default_root)
         return inserted.inserted_id
 
-@login_required
 @main.route('/', methods=['GET'], strict_slashes=False)
 def index():
-    """Main page
+    """Landing page
+    """
+    return render_template("index.html")
+
+@login_required
+@main.route('/IDE', methods=['GET'], strict_slashes=False)
+def IDE():
+    """Main IDE 
     """
     ip_address = os.getenv('IP_ADDRESS')
     container_id = current_user.Container
